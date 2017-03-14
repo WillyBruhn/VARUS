@@ -50,7 +50,7 @@ Open parametersCopy and make changes to arguments marked with < >.
 ### Step 3: 
 Call VARUS:
 ```sh        
-./VARUS --readParametersFromFile 1 --pathToParameters <absolute path>/MyFirstTest
+/VARUS/Implementation/./VARUS --readParametersFromFile 1 --pathToParameters <absolute path>/MyFirstTest
 ``` 
 This chooses 10 times a run to download from and downloads 1000 000 reads each time.
 
