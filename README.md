@@ -3,8 +3,12 @@ Program to draw optimal samples out of RNA-Seq Libraries for the purpose of gene
 
 # INSTALLATION
 ```sh
- git clone https://github.com/WillyBruhn/VARUS.git
+git clone https://github.com/WillyBruhn/VARUS.git
+
+# change to the source
 cd VARUS/Implementation
+
+# complile
 make
 ``` 
 
