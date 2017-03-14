@@ -21,7 +21,11 @@ Check that you have STAR installed [https://github.com/alexdobin/STAR].
 Check that you have a genome-file for Drosophila melanogaster.  
 
 ### Step 0:
-Create a new folder MyFirstTest.
+Create a new folder MyFirstTest and change into it:
+```sh
+mkdir MyFirstTest
+cd MyFirstTest
+``` 
 
 ### Step 1: 
 First you need to download the accession-ids of the runs.
