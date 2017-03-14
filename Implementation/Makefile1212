@@ -1,0 +1,77 @@
+COMP =	g++ -std=c++11 -c -O3
+LINK =	g++ -std=c++11
+
+all: RNAM
+
+debug: COMP += -DDEBUG -g
+debug: RNAM
+
+profile: COMP += -pg
+ 
+profile: main.o Toy.o Die.o DirichletMixture.o DirichletDistribution.o InputHandler.o DownloadController.o Run.o RNAread.o Experiment.o Estimator.o SimpleEstimator.o Controller.o AdvancedEstimator.o NaiveEstimator.o Functions.o
+	$(LINK) -pg main.o Toy.o Die.o DirichletMixture.o DirichletDistribution.o InputHandler.o  DownloadController.o Run.o RNAread.o Experiment.o Estimator.o SimpleEstimator.o Controller.o AdvancedEstimator.o NaiveEstimator.o Functions.o -o RNAMgprof
+
+test: RNAMTest
+
+RNAMTest: main_Test.o Toy.o Die.o DirichletMixture.o DirichletDistribution.o InputHandler.o DownloadController.o Run.o RNAread.o Experiment.o Estimator.o SimpleEstimator.o Controller.o AdvancedEstimator.o NaiveEstimator.o Functions.o
+	$(LINK) main_Test.o Toy.o Die.o DirichletMixture.o DirichletDistribution.o InputHandler.o  DownloadController.o Run.o RNAread.o Experiment.o Estimator.o SimpleEstimator.o Controller.o AdvancedEstimator.o NaiveEstimator.o Functions.o -o RNAMTest
+
+clean:
+	rm -f *.o RNAM
+
+RNAM: main.o Toy.o Die.o DirichletMixture.o DirichletDistribution.o InputHandler.o DownloadController.o Run.o RNAread.o Experiment.o Estimator.o SimpleEstimator.o Controller.o AdvancedEstimator.o NaiveEstimator.o Functions.o
+	$(LINK) main.o Toy.o Die.o DirichletMixture.o DirichletDistribution.o InputHandler.o  DownloadController.o Run.o RNAread.o Experiment.o Estimator.o SimpleEstimator.o Controller.o AdvancedEstimator.o NaiveEstimator.o Functions.o -o RNAM
+
+main_Test.o: main_Test.cpp Toy.h debug.h out.h operatorsTest.h InputHandler.h DownloadController.h Estimator.h SimpleEstimator.h AdvancedEstimator.h Functions.h
+	$(COMP) main_Test.cpp
+
+Functions.o: Functions.cpp
+	$(COMP) Functions.cpp
+
+main.o: main.cpp Toy.h debug.h out.h operatorsTest.h InputHandler.h DownloadController.h Estimator.h SimpleEstimator.h AdvancedEstimator.h TypeConventions.h Functions.h
+	$(COMP) main.cpp
+
+Toy.o: Toy.cpp Toy.h debug.h Die.h DirichletMixture.h Controller.h operatorsTest.h
+	$(COMP) Toy.cpp
+
+Die.o: Die.cpp Die.h debug.h Experiment.h
+	$(COMP) Die.cpp
+
+DirichletMixture.o: DirichletMixture.cpp DirichletMixture.h debug.h DirichletDistribution.h operatorsTest.h Estimator.h Functions.h
+	$(COMP) DirichletMixture.cpp
+
+DirichletDistribution.o: DirichletDistribution.cpp DirichletDistribution.h debug.h Die.h operatorsTest.h
+	$(COMP) DirichletDistribution.cpp
+
+#operators.o: operators.cpp operatorsTest
+#	g++ -std=c++11 -c -O2 operators.cpp
+
+InputHandler.o: InputHandler.cpp InputHandler.h debug.h out.h TypeConventions.h
+	$(COMP) InputHandler.cpp
+	
+DownloadController.o: DownloadController.cpp DownloadController.h Run.h RNAread.h Controller.h
+	$(COMP) DownloadController.cpp
+	
+Run.o: Run.cpp Run.h Experiment.h
+	$(COMP) Run.cpp
+	
+RNAread.o: RNAread.cpp RNAread.h
+	$(COMP) RNAread.cpp
+	
+Experiment.o: Experiment.cpp Experiment.h
+	$(COMP) Experiment.cpp
+
+Estimator.o: Estimator.cpp Estimator.h
+	$(COMP) Estimator.cpp
+	
+SimpleEstimator.o: SimpleEstimator.cpp SimpleEstimator.h debug.h Estimator.h
+	$(COMP) SimpleEstimator.cpp
+
+Controller.o: Controller.cpp Controller.h debug.h Estimator.h Experiment.h operatorsTest.h
+	$(COMP) Controller.cpp
+	
+AdvancedEstimator.o: AdvancedEstimator.cpp AdvancedEstimator.h debug.h Estimator.h operatorsTest.h
+	$(COMP) AdvancedEstimator.cpp
+	
+NaiveEstimator.o: NaiveEstimator.cpp NaiveEstimator.h debug.h Estimator.h operatorsTest.h
+	$(COMP) NaiveEstimator.cpp
