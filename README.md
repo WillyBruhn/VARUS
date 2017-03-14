@@ -30,7 +30,7 @@ You do this with the RunListRetriever. Open the terminal in the folder
 /VARUS/RunListRetriever. Run the RunListRetriever:
         
 ```sh
- ./RunListRetriever --outFileDir <absolute path>/MyFirstTest
+./RunListRetriever --outFileDir <absolute path>/MyFirstTest
 ``` 
 By default this downloads the accession-ids of the first 100 runs of 
 Drosophila melanogaster from the NCBI. For other species and other 
@@ -47,12 +47,12 @@ Open parametersCopy and make changes to arguments marked with < >.
 ## Step 3: 
 Call VARUS:
 ```sh        
-        ./VARUS --readParametersFromFile 1 --pathToParameters <absolute path>/MyFirstTest
+./VARUS --readParametersFromFile 1 --pathToParameters <absolute path>/MyFirstTest
 ``` 
 This chooses 10 times a run to download from and downloads 1000 000 reads each time.
 
 ## Step 4: 
 Call the visualization-tool:
 ```sh
-         /VARUS/VisualizationTool/./visOverview.R <absolute path>/MyFirstTest/ AdvancedEstimator
+/VARUS/VisualizationTool/./visOverview.R <absolute path>/MyFirstTest/ AdvancedEstimator
 ```        
