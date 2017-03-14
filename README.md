@@ -40,8 +40,9 @@ runs check
 ```
 The resulting file "Runlist.txt", located in MyFirstTest, contains the accession-ids.
 
-## Step 2: Copy the file "VARUS/Tutorial/Drosophila/parametersCopy" into the folder MyFirstTest.
-        Open parametersCopy and make changes to arguments marked with < >.
+## Step 2: 
+Copy the file "VARUS/Tutorial/Drosophila/parametersCopy" into the folder MyFirstTest.
+Open parametersCopy and make changes to arguments marked with < >.
 
 ## Step 3: 
 Call VARUS:
@@ -50,7 +51,8 @@ Call VARUS:
 ``` 
 This chooses 10 times a run to download from and downloads 1000 000 reads each time.
 
-## Step 4: Call the visualization-tool:
+## Step 4: 
+Call the visualization-tool:
 ```sh
          /VARUS/VisualizationTool/./visOverview.R <absolute path>/MyFirstTest/ AdvancedEstimator
 ```        
