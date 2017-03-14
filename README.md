@@ -61,4 +61,4 @@ Call the visualization-tool:
 ```sh
 /VARUS/VisualizationTool/./visOverview.R <absolute path>/MyFirstTest/ AdvancedEstimator
 ```        
-![alt tag](http://url/to/img.png)
+![alt tag](https://github.com/WillyBruhn/VARUS/blob/master/Tutorial/ComparisonNEW.pdf)
