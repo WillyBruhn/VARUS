@@ -29,7 +29,7 @@ Step 1: First you need to download the accession-ids of the runs.
         /VARUS/RunListRetriever. Run the RunListRetriever:
 ```sh
          ./RunListRetriever --outFileDir <absolute path>/MyFirstTest
- ``` 
+``` 
         By default this downloads the accession-ids of the first 100 runs of 
         Drosophila melanogaster from the NCBI. For other species and other 
         runs check
