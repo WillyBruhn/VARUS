@@ -53,6 +53,7 @@ Call VARUS:
 /VARUS/Implementation/./VARUS --readParametersFromFile 1 --pathToParameters <absolute path>/MyFirstTest
 ``` 
 This chooses 10 times a run to download from and downloads 1000 000 reads each time.
+The downloaded reads and the alignments can then be found in /MyFirstTest/AdvancedEstimator/.
 
 ### Step 4: 
 Call the visualization-tool:
