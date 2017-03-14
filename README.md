@@ -8,7 +8,7 @@ git clone https://github.com/WillyBruhn/VARUS.git
 # change to the source
 cd VARUS/Implementation
 
-# complile
+# build VARUS
 make
 ``` 
 
