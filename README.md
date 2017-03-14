@@ -61,6 +61,4 @@ Call the visualization-tool:
 ```sh
 /VARUS/VisualizationTool/./visOverview.R <absolute path>/MyFirstTest/ AdvancedEstimator
 ```        
-![alternate text](/Tutorial/ComparisonNEW.pdf)
-
-![alternate text](https://sourceforge.net/images/icon_linux.gif)
+![alternate text](/Tutorial/ComparisonNEW.png)
