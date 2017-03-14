@@ -2,6 +2,7 @@
 Program to draw optimal samples out of RNA-Seq Libraries for the purpose of gene-finding.
 
 # INSTALLATION
+## LINUX
 ```sh
 git clone https://github.com/WillyBruhn/VARUS.git
 
@@ -21,7 +22,11 @@ Check that you have STAR installed [https://github.com/alexdobin/STAR].
 Check that you have a genome-file for Drosophila melanogaster.  
 
 ### Step 0:
-Create a new folder MyFirstTest.
+Create a new folder MyFirstTest and change into it:
+```sh
+mkdir MyFirstTest
+cd MyFirstTest
+``` 
 
 ### Step 1: 
 First you need to download the accession-ids of the runs.
@@ -46,9 +51,10 @@ Open parametersCopy and make changes to arguments marked with < >.
 ### Step 3: 
 Call VARUS:
 ```sh        
-./VARUS --readParametersFromFile 1 --pathToParameters <absolute path>/MyFirstTest
+/VARUS/Implementation/./VARUS --readParametersFromFile 1 --pathToParameters <absolute path>/MyFirstTest
 ``` 
 This chooses 10 times a run to download from and downloads 1000 000 reads each time.
+The downloaded reads and the alignments can then be found in /MyFirstTest/AdvancedEstimator/.
 
 ### Step 4: 
 Call the visualization-tool:
