@@ -2,9 +2,8 @@ COMP =	g++ -std=c++11 -c -O3
 LINK =	g++ -std=c++11
 
 
-# this will compile the program and the tests and run the tests
-all: VARUS VARUSTest
-	./VARUSTest
+
+all: VARUS
 
 debug: COMP += -DDEBUG -g
 debug: VARUS
@@ -14,7 +13,9 @@ profile: main.o main.o ParameterHandler.o Controller.o ChromosomeInitializer.o A
 	$(LINK) -pg main.o ParameterHandler.o Controller.o ChromosomeInitializer.o Alligner.o Downloader.o Run.o Operators.o RNAread.o myRandomEngine.o Estimator.o SimpleEstimator.o Simulator.o AdvancedEstimator.o DirichletMixture.o DirichletDistribution.o Functions.o ClusterEstimator.o ClusterComponent.o -o VARUSgprof
 	
 
-test: VARUSTest
+# this will compile the program and the tests and run the tests
+test: VARUS VARUSTest
+	./VARUSTest
 
 VARUSTest: main_Test.o ParameterHandler.o Operators.o Run.o ChromosomeInitializer.o Downloader.o Alligner.o RNAread.o Controller.o myRandomEngine.o Estimator.o SimpleEstimator.o Simulator.o AdvancedEstimator.o Functions.o DirichletMixture.o DirichletDistribution.o ClusterEstimator.o ClusterComponent.o
 	$(LINK) ParameterHandler.o Operators.o main_Test.o Run.o ChromosomeInitializer.o Downloader.o Alligner.o RNAread.o Controller.o myRandomEngine.o Estimator.o SimpleEstimator.o Simulator.o AdvancedEstimator.o Functions.o DirichletMixture.o DirichletDistribution.o ClusterEstimator.o ClusterComponent.o -o VARUSTest

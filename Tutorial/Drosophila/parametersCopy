@@ -1,0 +1,32 @@
+--batchSize 1000000
+--blockSize 5000
+--components 1
+--cost 0.001
+--createDice 0
+--deleteLater 0
+--dieList 0
+--estimator 2
+--exportObservationsToFile 1
+--exportParametersToFile 1
+--genomeDir <insert path to you genome-file>
+--lambda 6.0
+--lessInfo 0
+--loadAllOnce 0
+--maxBatches 10
+--newtonIterations 10
+--newtonPercission 10
+--numOfBlocks 29918
+--outFileNamePrefix <absolute path to>/MyFirstTest/AdvancedEstimator
+--pathToDice 
+--pathToParameters <absolute path to>/MyFirstTest
+--pathToRuns <absolute path to>/MyFirstTest
+--pathToSTAR <path to the source of STAR>
+--pseudoCount 1
+--randomSeed -1
+--readFilesIn <absolute path to>/MyFirstTest/AdvancedEstimator
+--readParametersFromFile 1
+--runThreadN 4
+--simulation 1
+--trainingsIterations 1
+--verbosityDebug 1
+--profitCondition 0
