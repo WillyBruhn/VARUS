@@ -75,7 +75,7 @@ void ClusterComponent::calculateAlphaSum(){
 	} else{
 		alphaSum = param->lambda*param->numOfBlocks;
 	}
-	DEBUG(0,alphaSum);
+	DEBUG(4,"AlphaSum: " << alphaSum);
 	scaleMap(alpha,alphaSum);
 }
 

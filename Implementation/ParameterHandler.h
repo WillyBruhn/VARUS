@@ -60,7 +60,7 @@ public:
 
 
 	uI newtonIterations;
-	double newtonPercission;
+	double newtonPrecision;
 
 	int exportObservationsToFile;
 

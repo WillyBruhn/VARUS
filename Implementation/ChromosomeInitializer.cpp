@@ -80,7 +80,7 @@ void ChromosomeInitializer::getChromosomeLengths() {
 		ifstream myfile(c);
 
 		if (!myfile.is_open()) {
-			DEBUG(0,"Can't open " << s);
+			DEBUG(0,"Can't open chromosomefile " << s);
 		}
 
 		while (getline(myfile, line)) {
@@ -155,7 +155,7 @@ void ChromosomeInitializer::initializeRuns(std::vector<Run*> &runs) {
 	ifstream myfile(c);
 
 	if (!myfile.is_open()) {
-		DEBUG(0,"Can't open " << s);
+		DEBUG(0,"Can't open Runlist " << s);
 	}
 
 	while (getline(myfile, line)) {
@@ -194,7 +194,7 @@ void ChromosomeInitializer::initializeRuns(std::vector<Run*> &runs) {
 		}
 	}
 	if (0 == runs.size()) {
-		DEBUG(1, "WARNING:No Runs found!");
+		DEBUG(0, "WARNING:No Runs found!");
 	}
 	return;
 }
@@ -214,7 +214,7 @@ void ChromosomeInitializer::initializeSigma(Run *r) {
 //		ran->seed(t);
 //	}
 
-	DEBUG(2,r->maxNumOfBatches);
+	DEBUG(3,"Max number of batches for run " << r->accesionId << " " << r->maxNumOfBatches);
 	// set all values
 	for (int i=0; i<r->maxNumOfBatches; i++) r->sigma.push_back(i);
 

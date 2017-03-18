@@ -53,11 +53,14 @@ void Downloader::nextBatchIndices(Run *r) {
 	r->sigmaIndex++;
 }
 
-void Downloader::getBatch(Run *r, bool all)
+bool Downloader::getBatch(Run *r, bool all)
 {
 	/*! \brief	The next batch will be downloaded according to the sigma-vector.
 	 * 	The command for the download is invoked throught the shell and calls fastq-dump.
 	 *
+	 *	Sometimes batches are not loaded correctly. This is a problem with fastq-dump.
+	 *	In this case the reads can not be alligned. This function returns "false", if the
+	 *	download failed.
 	 */
 
 	if(all == false) nextBatchIndices(r);	// chooses the correct N and X
@@ -75,11 +78,13 @@ void Downloader::getBatch(Run *r, bool all)
 
     if(0 != status)
     {
-        DEBUG(1,"\nFailed to save batch :"  << r->accesionId << " -N  " << r->N << " -X " << r->X);
+        DEBUG(0,"\nFailed to save batch :"  << r->accesionId << " -N  " << r->N << " -X " << r->X);
 //        writeBadRunSection(outFileNamePrefix);
 
 //        exit(0);
+        return false;
     }
 
     r->timesDownloaded++;
+    return true;
 }

@@ -36,7 +36,7 @@ void ClusterEstimator::initializeClusters(std::vector<Run*> &runs){
 	 *
 	 */
 
-	DEBUG(2,"Initializing clusters");
+	DEBUG(1,"Initializing clusters");
 	std::vector<Run*> startPoints = runs;
 
 	int num = startPoints.size();
@@ -60,7 +60,7 @@ void ClusterEstimator::calculateRunQs(std::vector<Run*> &runs){
 	 * The q-map holds the frequencys of all observations. It is needed for the clustering-step.
 	 */
 
-	DEBUG(2,"calculating Run qs");
+	DEBUG(1,"calculating Run qs");
 	for(unsigned int k = 0; k < runs.size(); k++){
 		UUmap::iterator j;
 		for(j = runs[k]->observations.begin(); j != runs[k]->observations.end(); j++){
@@ -76,7 +76,7 @@ void ClusterEstimator::kMeans(std::vector<Run*> &runs){
 	 * searched.
 	 */
 
-	DEBUG(2,"k-means");
+	DEBUG(1,"k-means");
 	for(unsigned int l = 0; l < 10; l++){
 		for(unsigned int i = 0; i < components.size(); i++){
 			components[i].releaseRuns();

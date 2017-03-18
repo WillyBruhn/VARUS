@@ -70,7 +70,7 @@ void Alligner::mapReads(Run *r)
         int status = system(c);
         if(0 != status)
         {
-            DEBUG(0,"Failed to run STAR properly");
+            DEBUG(0,"Failed to run STAR properly!");
         }
 }
 

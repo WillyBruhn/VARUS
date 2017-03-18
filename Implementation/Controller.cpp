@@ -21,7 +21,7 @@ Controller::Controller(ParameterHandler *p) {
 
 
 	param 	= p;
-	DEBUG(3,"Creating Controller");
+	DEBUG(1,"Creating Controller");
 
 	if(param->simulation != 1){
 		chrom 	= new ChromosomeInitializer(p);
@@ -60,7 +60,7 @@ Controller::Controller(ParameterHandler *p) {
 
 	totalProfit = 0.0;
 
-	DEBUG(3,"Done Creating Controller");
+	DEBUG(1,"Done Creating Controller");
 }
 
 Controller::~Controller() {
@@ -71,7 +71,7 @@ void Controller::initialize(){
 	 *  Also sets the seed for the random-engines.
 	 */
 
-	DEBUG(-1,"Initializing Controller");
+	DEBUG(1,"Initializing Controller");
 	if(param->simulation != 1){
 		chrom->readInputRuns();
 		chrom->getChromosomeLengths();
@@ -79,11 +79,11 @@ void Controller::initialize(){
 		chrom->initializeRuns(runs);
 	}
 	else {
-		DEBUG(3,"Initializing simulator")
+		DEBUG(1,"Initializing simulator")
 		sim->readInputRuns();
 		sim->initializeRuns(runs);
 		initMap(totalObservations,(unsigned int) 0, param->numOfBlocks);
-		DEBUG(3,"Done initializing simulator");
+		DEBUG(1,"Done initializing simulator");
 	}
 
 	downloadableRuns = runs;
@@ -97,10 +97,10 @@ void Controller::initialize(){
 			} else {
 				d->setTranslate2Str(chrom->translate2str);
 			}
-			DEBUG(3,"Done initializing translate2str for DM");
+			DEBUG(1,"Done initializing translate2str for DM");
 		}
 	}
-	DEBUG(-1,"Done Initializing in Controller");
+	DEBUG(1,"Done Initializing in Controller");
 }
 
 void Controller::algorithm(){
@@ -113,7 +113,7 @@ void Controller::algorithm(){
 
 
 	if(param->loadAllOnce == 1){
-		DEBUG(0,"Loading all once");
+		DEBUG(1,"Loading all once");
 		for(unsigned int k = 0; k < runs.size(); k++){
 			if(param->simulation != 1){
 				down->getBatch(runs[k]);
@@ -136,7 +136,7 @@ void Controller::algorithm(){
 		// calculates maxProfit
 		calculateProfit(downloadableRuns);
 		Run *tmp_run = chooseNextRun();
-		DEBUG(0,"Done Loading all once");
+		DEBUG(1,"Done Loading all once");
 	}
 
 	while(continuing()){
@@ -154,12 +154,12 @@ void Controller::algorithm(){
 
 
 
-		DEBUG(0,"Choosing next Run ...");
+		DEBUG(1,"Choosing next Run ...");
 		Run *tmp_run = chooseNextRun();
-		DEBUG(0,"...done Choosing next Run");
+		DEBUG(1,"...done Choosing next Run");
 
 		// maxProfit set in chooseNextRun()
-		DEBUG(0,"Iteration: " << batchCount << " | maxProfit: " << maxProfit);
+		DEBUG(1,"Iteration: " << batchCount << " | maxProfit: " << maxProfit);
 
 		// if profit < 0 stop downloading
 		if(!continuing()) break;
@@ -175,21 +175,21 @@ void Controller::algorithm(){
 		totalProfit = totalScore - param->cost*param->batchSize*batchCount;
 
 		if(param->estimator != 0){
-			DEBUG(0,"Estimating...")
+			DEBUG(1,"Estimating...")
 			// we pass all runs since the DM uses the information from all runs
 			est->estimateP(runs, batchCount);
-			DEBUG(0,"... done Estimating")
+			DEBUG(1,"... done Estimating")
 		}
 
 		calculateProfit(downloadableRuns);
 
-		DEBUG(-1,"Exporting...")
+		DEBUG(1,"Exporting...")
 		if(1 == param->lessInfo){
 			exportTotalObservationCSVlessInfo(tmp_run->accesionId);
 		}else{
 			exportTotalObservationCSV(tmp_run->accesionId);
 		}
-		DEBUG(0,"...done Exporting")
+		DEBUG(1,"...done Exporting")
 	}
 }
 
@@ -468,7 +468,7 @@ void Controller::createDiceFromRuns() {
 	ifstream file(c);
 
 	if (!file.is_open()) {
-		DEBUG(1,"Cant open " << com << ". Will create new file completedRuns.txt");
+		DEBUG(0,"Cant open " << com << ". Will create new file completedRuns.txt");
 //        return;
 	}
 
@@ -483,8 +483,8 @@ void Controller::createDiceFromRuns() {
 			completedRuns[tmp] = 1;
 		}
 	}
-	DEBUG(1, completedRuns.size());
-	DEBUG(1, completedRuns);
+	DEBUG(3, completedRuns.size());
+	DEBUG(3, completedRuns);
 
 	// to change the order of the runs downloaded randomly
 	ran->shuffle(runs);
@@ -503,7 +503,7 @@ void Controller::createDiceFromRuns() {
 				DEBUG(0, "Cant open file " << com << "!");
 			}
 			f << runs[i]->accesionId << endl;
-			DEBUG(1,runs[i]->accesionId);
+			DEBUG(3,runs[i]->accesionId);
 			f.close();
 			runs.erase(runs.begin()+i);
 		} else {

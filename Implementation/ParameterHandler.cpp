@@ -219,8 +219,8 @@ ParameterHandler::ParameterHandler() {
 		INITPARAM(newtonIterations, "number of times the newtons-method is done to find the maximum-likelihood"
 				" for the alpha-sum. Only relevant for estimator 3.");
 
-	newtonPercission = 10;
-		INITPARAM(newtonPercission, "threshold at which the newtons-method will aboard, and return the value.");
+	newtonPrecision = 0.001;
+		INITPARAM(newtonPrecision, "threshold at which the newtons-method will aboard, and return the value.");
 
 	readParametersFromFile = 0;
 		INITPARAM(readParametersFromFile, "if set to 1, the programm will look for a file specified with "
@@ -305,7 +305,7 @@ void ParameterHandler::readArguments(int argc, char *argv[]) {
 			{"trainingsIterations", 1, nullptr, 't'},
 			{"verbosityDebug", 1, nullptr, 'v'},
 			{"newtonIterations", 1, nullptr, 'i'},
-			{"newtonPercission", 1, nullptr, 'P'},
+			{"newtonPrecision", 1, nullptr, 'P'},
 			{"readParametersFromFile", 1, nullptr, 'q'},
 			{"pathToParameters", 1, nullptr, 'Q'},
 			{"exportParametersToFile", 1, nullptr, 'Z'},
@@ -450,8 +450,8 @@ void ParameterHandler::readArguments(int argc, char *argv[]) {
             break;
 
         case 'P':
-            newtonPercission = std::stof(optarg);
-            	PARAM(newtonPercission);
+        	newtonPrecision = std::stof(optarg);
+            	PARAM(newtonPrecision);
             break;
 
         case 'q':

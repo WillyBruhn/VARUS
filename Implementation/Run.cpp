@@ -43,7 +43,7 @@ Run::Run(std::string accesionId, const unsigned int transcriptBlocks, const unsi
 	X = 0;
 	this->numOfSpots = numOfSpots;
 //	assert(batchSize != 0);
-	DEBUG(1,numOfSpots << ":" << batchSize);
+	DEBUG(2,"Creating run with numOfSpots: " << numOfSpots << ", batchSize: " << batchSize);
 	maxNumOfBatches = ceil((double)numOfSpots/(double)batchSize);
 	sigmaIndex = 0;
 	this->batchSize = batchSize;
@@ -52,7 +52,7 @@ Run::Run(std::string accesionId, const unsigned int transcriptBlocks, const unsi
 	observationSum = 0;
 	pNoObs = 0.0;
 	expectedProfit = 0,0;
-	DEBUG(4,"Done creating Run");
+	//DEBUG(2,"Done creating Run");
 }
 
 Run::~Run() {

@@ -8,7 +8,7 @@
 #ifndef DOWNLOADER_H_
 #define DOWNLOADER_H_
 #include "Run.h"
-#include <memory>
+#include <string.h>
 #include "ParameterHandler.h"
 
 class Downloader {
@@ -20,7 +20,7 @@ public:
 
 	std::string shellCommand(Run *r);
 	void nextBatchIndices(Run *r);
-	void getBatch(Run *r, bool all = false);
+	bool getBatch(Run *r, bool all = false);
 };
 
 #endif /* DOWNLOADER_H_ */

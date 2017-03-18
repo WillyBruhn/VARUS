@@ -16,7 +16,7 @@ using namespace std;
 DirichletDistribution::DirichletDistribution(ParameterHandler *p, const double w) {
 
 	param = p;
-	DEBUG(3,"Creating DirichletDistribution");
+	DEBUG(1,"Creating DirichletDistribution");
 	size = param->numOfBlocks;
 	weight = w;
 	initMap(alpha,1.0,size);
@@ -37,7 +37,7 @@ DirichletDistribution::DirichletDistribution(ParameterHandler *p, const double w
 		initMap(pseudo2->observations,(U32) 1,size);
 		pseudo2->observationSum = size;
 
-	DEBUG(3,"Done Creating DirichletDistribution");
+	DEBUG(1,"Done Creating DirichletDistribution");
 }
 
 DirichletDistribution::DirichletDistribution() {
@@ -129,9 +129,6 @@ void DirichletDistribution::calculateCCountsAndQij() {
 //			Qij[j->first] = (double)( aggregateCCounts[j->first])/(double)( cSum);
 
 			Qij[j->first] = (double)( aggregateCCounts[j->first] + pseudoCount)/(double)( cSum + pseudoCount*aggregateCCounts.size());
-
-			Qij[j->first] = (double)( aggregateCCounts[j->first] + pseudoCount)/(double)( cSum + pseudoCount*aggregateCCounts.size());
-
 
 			DEBUG(4,"Qij[" << j->first << "] = " << aggregateCCounts[j->first] << "/" << cSum);
 //		}

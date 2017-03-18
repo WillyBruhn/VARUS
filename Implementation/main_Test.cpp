@@ -2273,9 +2273,6 @@ void RunCrashTest(){
 	cerr << physMemUsed << endl;
 
 
-
-
-
 //	{
 //		vector<UUmap> maps;
 //		unsigned int count = 0;
@@ -2292,11 +2289,15 @@ void RunCrashTest(){
 
 
 	{
-		vector<unordered_map<unsigned short,unsigned short> > maps;
+		vector<UUmap > maps;
 		unsigned int count = 0;
-		while(physMemUsed < totalPhysMem){
-			unordered_map<unsigned short, unsigned short> m;
-			initMap(m,(unsigned short)0,(unsigned short)30000);
+		while(count < 100){
+			unordered_map<U32, U32> m;
+			initMap(m,(U32)0,(U32)30000);
+
+			for(U32 i = 0; i < 30000; i++){
+				m[i] = i;
+			}
 			maps.push_back(m);
 			count++;
 			cerr << count << " " << getValue()/1000 << "MB" << endl;
@@ -2326,7 +2327,7 @@ int main(int argc, char *argv[]) {
 //
 //	test_ChromosomeInitializer();
 
-	test_Controller();
+//	test_Controller();
 
 //	test_Estimators();
 //
@@ -2342,7 +2343,7 @@ int main(int argc, char *argv[]) {
 
 //	test_MapSize();
 
-//	RunCrashTest();
+	RunCrashTest();
 
 	cerr << "...finished tests with " << error_count << " errors." << endl;
 	return EXIT_SUCCESS;
