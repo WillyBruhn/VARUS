@@ -21,7 +21,7 @@ VARUSTest: main_Test.o ParameterHandler.o Operators.o Run.o ChromosomeInitialize
 	$(LINK) ParameterHandler.o Operators.o main_Test.o Run.o ChromosomeInitializer.o Downloader.o Alligner.o RNAread.o Controller.o myRandomEngine.o Estimator.o SimpleEstimator.o Simulator.o AdvancedEstimator.o Functions.o DirichletMixture.o DirichletDistribution.o ClusterEstimator.o ClusterComponent.o -o VARUSTest
 
 clean:
-	rm -f *.o VARUS
+	rm -f *.o VARUS rm -f *.o VARUSgprof rm -f *.o VARUSTest
 
 VARUS: main.o ParameterHandler.o Controller.o ChromosomeInitializer.o Alligner.o Downloader.o Run.o Operators.o RNAread.o myRandomEngine.o Estimator.o SimpleEstimator.o Simulator.o AdvancedEstimator.o DirichletMixture.o DirichletDistribution.o Functions.o ClusterEstimator.o ClusterComponent.o
 	$(LINK) main.o ParameterHandler.o Controller.o ChromosomeInitializer.o Alligner.o Downloader.o Run.o Operators.o RNAread.o myRandomEngine.o Estimator.o SimpleEstimator.o Simulator.o AdvancedEstimator.o DirichletMixture.o DirichletDistribution.o Functions.o ClusterEstimator.o ClusterComponent.o -o VARUS

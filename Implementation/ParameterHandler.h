@@ -34,7 +34,7 @@ public:
 ////     paths, commandline
     std::string pathToSTAR;
     std::string pathToRuns;
-    std::string readFilesIn;
+//    std::string readFilesIn;
     std::string genomeDir;
     std::string outFileNamePrefix;
     uI runThreadN;
@@ -47,7 +47,7 @@ public:
 	int createDice;
 	int simulation;
 	int estimator;
-	int dieList;
+//	int dieList;
 	int lessInfo = 1;
 	uI components;
 	uI numOfBlocks;
@@ -79,7 +79,7 @@ public:
 
 	int simpleDM;
 
-	int kMeansIterations;
+//	int kMeansIterations;
 
 	int exportNewtons;
 

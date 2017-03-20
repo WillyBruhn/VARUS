@@ -118,7 +118,7 @@ void Simulator::initializeRuns(std::vector<Run*> &runs){
 		{
 			DEBUG(0,"Can't read dice: Unable to open file:" << name);
 			DEBUG(0,"You can either try to delete " << name <<
-					" in the Dielist.txt or add " << name <<
+					" in the Runlist.txt or add " << name <<
 					" to the correct folder. Exiting programm");
 			exit(-1);
 		}

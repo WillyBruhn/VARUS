@@ -49,6 +49,11 @@ findMaxScore <- function(path,estimators){
       
       pot <- adv$totalProfit[1]
       
+      
+      #adv$totalScore <- as.numeric(as.character(adv$totalScore))        # <----------------
+      
+      #pot <- adv$totalScore[1]        # <----------------
+      
       if(ylimMax < as.numeric(pot)) {
         ylimMax = pot
       }
@@ -75,6 +80,11 @@ totalScoreHistory <-function(path2files, it, yl)
     adv$totalProfit <- as.numeric(as.character(adv$totalProfit))
 
     profitHistory[i] <- adv$totalProfit[1]
+    
+    
+    #adv$totalScore <- as.numeric(as.character(adv$totalScore))
+    
+   # profitHistory[i] <- adv$totalScore[1]
 
   }
 #  plot(c(1:iterations),scoreHistory, xlab="Iteration", ylab = "totalScore", type = "l", 
@@ -115,6 +125,10 @@ totalScoreHistoryAllTogether <-function(path,yl){
       adv$totalProfit <- as.numeric(as.character(adv$totalProfit))
       
       profitHistory[i] <- adv$totalProfit[1]
+      
+      #adv$totalScore <- as.numeric(as.character(adv$totalScore))        # <----------------
+      
+      #profitHistory[i] <- adv$totalScore[1]        # <----------------
     }
     
     
@@ -122,7 +136,7 @@ totalScoreHistoryAllTogether <-function(path,yl){
       #plot(c(1:iterations),profitHistory, xlab="Iteration", ylab = "Profit", type = "l", 
       #   main = paste("Final Profit: ", profitHistory[iterations]," max: ",max(profitHistory), sep=""),xlim = c(0,maxX),ylim = c(yl[1],yl[2]*1.1), col = j+1)
       
-      plot(c(1:iterations),profitHistory, xlab="Iteration", ylab = "Profit", type = "l", 
+      plot(c(1:iterations),profitHistory, xlab="Iteration", ylab = "Score", type = "l", 
            xlim = c(0,maxX),ylim = c(yl[1],yl[2]*1.1), col = j+1)
     } else {
       par(new = TRUE)
@@ -131,9 +145,10 @@ totalScoreHistoryAllTogether <-function(path,yl){
     colvec = c(colvec,j+1)
   }
   
-  legend('topleft', estimators, lty=c(1,1), lwd=c(2.5,2.5),col=colvec)
+  legend('topright', estimators, lty=c(1,1), lwd=c(2.5,2.5),col=colvec)        # <----------------------
   
   mtext("Profit", side=2, line=2,outer = FALSE)
+  #mtext("Profit", side=2, line=2,outer = FALSE)
   mtext("Iteration", side=1, line=2,outer = FALSE, cex = 0.5)
 }
 

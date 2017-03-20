@@ -17,7 +17,7 @@ make
 ## Downloading reads of Drosophila melanogaster from the NCBI:
 Find this example also under Tutorial/GettingStarted.
 ### Requirements:
-Check that you have fastq-dump installed [link to be inserted].  
+Check that you have fastq-dump installed [https://ncbi.github.io/sra-tools/fastq-dump.html].  
 Check that you have STAR installed [https://github.com/alexdobin/STAR].  
 Check that you have a genome-file for Drosophila melanogaster.  
 

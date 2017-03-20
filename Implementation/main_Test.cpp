@@ -561,7 +561,7 @@ void test_ChromosomeInitializer_readInputRuns(){
 
 	ParameterHandler *p = new ParameterHandler();
 	p->pathToRuns = "/home/willy/workspace/RNAMv2/UnitTests/ChromosomeInitializer/dielist/";
-	p->dieList = 1;
+	//p->dieList = 1;
 	unique_ptr<ChromosomeInitializer> chr(new ChromosomeInitializer(p));
 	chr->readInputRuns();
 
@@ -572,7 +572,7 @@ void test_ChromosomeInitializer_readInputRuns(){
 	ASSRT("0:die1;1:die2;2:die36363;" == str);
 
 	p->pathToRuns = "/home/willy/workspace/RNAMv2/UnitTests/ChromosomeInitializer/runlist/";
-	p->dieList = 0;
+	//p->dieList = 0;
 	unique_ptr<ChromosomeInitializer> chr2(new ChromosomeInitializer(p));
 	chr2->readInputRuns();
 
@@ -1460,7 +1460,7 @@ void test_DirichletMixture_train(){
 		p->numOfBlocks = 2;
 		p->trainingsIterations = 13;
 		p->newtonIterations = 10;
-		p->newtonPercission = 0.0001;
+		p->newtonPrecision = 0.0001;
 		p->components = 2;
 		p->outFileNamePrefix = "/home/willy/workspace/RNAMv2/UnitTests/Estimator/DirichletMixture/test0/";
 //		p->randomSeed = 130;
@@ -1601,7 +1601,7 @@ void test_DirichletMixture_calculateP(){
 		p->numOfBlocks = 2;
 		p->trainingsIterations = 12;
 		p->newtonIterations = 10;
-		p->newtonPercission = 0.0001;
+		p->newtonPrecision = 0.0001;
 		p->components = 2;
 		p->outFileNamePrefix = "/home/willy/workspace/RNAMv2/UnitTests/Estimator/DirichletMixture/test0/";
 		p->randomSeed = 13809;
@@ -1927,7 +1927,7 @@ void test_Estimators(){
 void test_Simulator_readInputRuns(){
 	ParameterHandler *p = new ParameterHandler();
 	p->pathToRuns = "/home/willy/workspace/RNAMv2/UnitTests/Simulator/readInputRuns";
-	p->dieList = 1;
+	//p->dieList = 1;
 	Simulator *sim = new Simulator(p);
 	sim->readInputRuns();
 

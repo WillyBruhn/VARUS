@@ -77,7 +77,7 @@ void ClusterEstimator::kMeans(std::vector<Run*> &runs){
 	 */
 
 	DEBUG(1,"k-means");
-	for(unsigned int l = 0; l < 10; l++){
+	for(unsigned int l = 0; l < param->trainingsIterations; l++){
 		for(unsigned int i = 0; i < components.size(); i++){
 			components[i].releaseRuns();
 		}
