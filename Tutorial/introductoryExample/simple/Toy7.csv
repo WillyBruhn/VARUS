@@ -1,0 +1,3 @@
+blockName;totalObservations;totalScore;totalProfit;best;die1.obs;die1.p;die1.score;die2.obs;die2.p;die2.score
+one;30;7.14756;0.147559;die1;30;0.5;-0.735399;0;0.0833333;-0.771695
+two;40;7.14756;0.147559;die1;30;0.5;-0.735399;10;0.916667;-0.771695
