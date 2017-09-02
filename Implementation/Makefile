@@ -1,7 +1,8 @@
 COMP =	g++ -std=c++11 -c -O3
 LINK =	g++ -std=c++11
 
-
+BUILD = ./bin/
+SRC = src/
 
 all: VARUS
 
@@ -9,79 +10,79 @@ debug: COMP += -DDEBUG -g
 debug: VARUS
 
 profile: COMP += -pg
-profile: main.o main.o ParameterHandler.o Controller.o ChromosomeInitializer.o Alligner.o Downloader.o Run.o Operators.o RNAread.o myRandomEngine.o Estimator.o SimpleEstimator.o Simulator.o AdvancedEstimator.o DirichletMixture.o DirichletDistribution.o Functions.o ClusterEstimator.o ClusterComponent.o
-	$(LINK) -pg main.o ParameterHandler.o Controller.o ChromosomeInitializer.o Alligner.o Downloader.o Run.o Operators.o RNAread.o myRandomEngine.o Estimator.o SimpleEstimator.o Simulator.o AdvancedEstimator.o DirichletMixture.o DirichletDistribution.o Functions.o ClusterEstimator.o ClusterComponent.o -o VARUSgprof
+profile: $(BUILD)main.o $(BUILD)main.o $(BUILD)ParameterHandler.o $(BUILD)Controller.o $(BUILD)ChromosomeInitializer.o $(BUILD)Alligner.o $(BUILD)Downloader.o $(BUILD)Run.o $(BUILD)Operators.o $(BUILD)RNAread.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)Functions.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o
+	$(LINK) -pg $(BUILD)main.o $(BUILD)ParameterHandler.o $(BUILD)Controller.o $(BUILD)ChromosomeInitializer.o $(BUILD)Alligner.o $(BUILD)Downloader.o $(BUILD)Run.o $(BUILD)Operators.o $(BUILD)RNAread.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)Functions.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o -o VARUSgprof
 	
 
 # this will compile the program and the tests and run the tests
 test: VARUS VARUSTest
 	./VARUSTest
 
-VARUSTest: main_Test.o ParameterHandler.o Operators.o Run.o ChromosomeInitializer.o Downloader.o Alligner.o RNAread.o Controller.o myRandomEngine.o Estimator.o SimpleEstimator.o Simulator.o AdvancedEstimator.o Functions.o DirichletMixture.o DirichletDistribution.o ClusterEstimator.o ClusterComponent.o
-	$(LINK) ParameterHandler.o Operators.o main_Test.o Run.o ChromosomeInitializer.o Downloader.o Alligner.o RNAread.o Controller.o myRandomEngine.o Estimator.o SimpleEstimator.o Simulator.o AdvancedEstimator.o Functions.o DirichletMixture.o DirichletDistribution.o ClusterEstimator.o ClusterComponent.o -o VARUSTest
+VARUSTest: $(BUILD)main_Test.o $(BUILD)ParameterHandler.o $(BUILD)Operators.o $(BUILD)Run.o $(BUILD)ChromosomeInitializer.o $(BUILD)Downloader.o $(BUILD)Alligner.o $(BUILD)RNAread.o $(BUILD)Controller.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)Functions.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o
+	$(LINK) $(BUILD)ParameterHandler.o $(BUILD)Operators.o $(BUILD)main_Test.o $(BUILD)Run.o $(BUILD)ChromosomeInitializer.o $(BUILD)Downloader.o $(BUILD)Alligner.o $(BUILD)RNAread.o $(BUILD)Controller.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)Functions.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o -o VARUSTest
 
 clean:
-	rm -f *.o VARUS rm -f *.o VARUSgprof rm -f *.o VARUSTest
+	rm -f $(BUILD)*.o VARUS rm -f *.o VARUSgprof rm -f *.o VARUSTest
 
-VARUS: main.o ParameterHandler.o Controller.o ChromosomeInitializer.o Alligner.o Downloader.o Run.o Operators.o RNAread.o myRandomEngine.o Estimator.o SimpleEstimator.o Simulator.o AdvancedEstimator.o DirichletMixture.o DirichletDistribution.o Functions.o ClusterEstimator.o ClusterComponent.o
-	$(LINK) main.o ParameterHandler.o Controller.o ChromosomeInitializer.o Alligner.o Downloader.o Run.o Operators.o RNAread.o myRandomEngine.o Estimator.o SimpleEstimator.o Simulator.o AdvancedEstimator.o DirichletMixture.o DirichletDistribution.o Functions.o ClusterEstimator.o ClusterComponent.o -o VARUS
+VARUS: $(BUILD)main.o $(BUILD)ParameterHandler.o $(BUILD)Controller.o $(BUILD)ChromosomeInitializer.o $(BUILD)Alligner.o $(BUILD)Downloader.o $(BUILD)Run.o $(BUILD)Operators.o $(BUILD)RNAread.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)Functions.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o
+	$(LINK) $(BUILD)main.o $(BUILD)ParameterHandler.o $(BUILD)Controller.o $(BUILD)ChromosomeInitializer.o $(BUILD)Alligner.o $(BUILD)Downloader.o $(BUILD)Run.o $(BUILD)Operators.o $(BUILD)RNAread.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)Functions.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o -o VARUS
 	
-main.o: main.cpp debug.h TypeConventions.h ParameterHandler.h Warning.h Alligner.h Downloader.h Run.h Controller.h ChromosomeInitializer.h RNAread.h myRandomEngine.h Estimator.h SimpleEstimator.h Simulator.h AdvancedEstimator.h DirichletMixture.h DirichletDistribution.h Functions.h 
-	$(COMP) main.cpp
+$(BUILD)main.o: $(SRC)main.cpp headers/debug.h headers/TypeConventions.h headers/ParameterHandler.h headers/Warning.h headers/Alligner.h headers/Downloader.h headers/Run.h headers/Controller.h headers/ChromosomeInitializer.h headers/RNAread.h headers/myRandomEngine.h headers/Estimator.h headers/SimpleEstimator.h headers/Simulator.h headers/AdvancedEstimator.h headers/DirichletMixture.h headers/DirichletDistribution.h headers/Functions.h 
+	$(COMP) $(SRC)main.cpp -o $(BUILD)main.o;
 	
-main_Test.o: main_Test.cpp debug.h TypeConventions.h Operators.h ParameterHandler.h Warning.h ChromosomeInitializer.h myRandomEngine.h Estimator.h SimpleEstimator.h Simulator.h AdvancedEstimator.h Functions.h DirichletMixture.h DirichletDistribution.h ClusterEstimator.h ClusterComponent.h
-	$(COMP) main_Test.cpp
+$(BUILD)main_Test.o: $(SRC)main_Test.cpp headers/debug.h headers/TypeConventions.h headers/Operators.h headers/ParameterHandler.h headers/Warning.h headers/ChromosomeInitializer.h headers/myRandomEngine.h headers/Estimator.h headers/SimpleEstimator.h headers/Simulator.h headers/AdvancedEstimator.h headers/Functions.h headers/DirichletMixture.h headers/DirichletDistribution.h headers/ClusterEstimator.h headers/ClusterComponent.h
+	$(COMP) $(SRC)main_Test.cpp -o $(BUILD)mainTest;
 	
-ParameterHandler.o: ParameterHandler.cpp TypeConventions.h Operators.h ParameterHandler.h Warning.h
-	$(COMP) ParameterHandler.cpp
+$(BUILD)ParameterHandler.o: $(SRC)ParameterHandler.cpp headers/TypeConventions.h headers/Operators.h headers/ParameterHandler.h headers/Warning.h
+	$(COMP) $(SRC)ParameterHandler.cpp -o $(BUILD)ParameterHandler.o;
 	
-Operators.o: Operators.cpp Operators.h TypeConventions.h
-	$(COMP) Operators.cpp
+$(BUILD)Operators.o: $(SRC)Operators.cpp headers/Operators.h headers/TypeConventions.h
+	$(COMP) $(SRC)Operators.cpp -o $(BUILD)Operators.o;
 	
-Run.o: Run.cpp Run.h
-	$(COMP) Run.cpp
+$(BUILD)Run.o: $(SRC)Run.cpp headers/Run.h
+	$(COMP) $(SRC)Run.cpp -o $(BUILD)Run.o;
 	
-ChromosomeInitializer.o: ChromosomeInitializer.cpp ChromosomeInitializer.h myRandomEngine.h
-	$(COMP) ChromosomeInitializer.cpp
+$(BUILD)ChromosomeInitializer.o: $(SRC)ChromosomeInitializer.cpp headers/ChromosomeInitializer.h headers/myRandomEngine.h
+	$(COMP) $(SRC)ChromosomeInitializer.cpp -o $(BUILD)ChromosomeInitializer.o;
 	
-Downloader.o: Downloader.cpp Downloader.h Run.h ParameterHandler.h
-	$(COMP) Downloader.cpp
+$(BUILD)Downloader.o: $(SRC)Downloader.cpp headers/Downloader.h headers/Run.h headers/ParameterHandler.h
+	$(COMP) $(SRC)Downloader.cpp -o $(BUILD)Downloader.o;
 	
-Alligner.o: Alligner.cpp Alligner.h Run.h ParameterHandler.h RNAread.h
-	$(COMP) Alligner.cpp
+$(BUILD)Alligner.o: $(SRC)Alligner.cpp headers/Alligner.h headers/Run.h headers/ParameterHandler.h headers/RNAread.h
+	$(COMP) $(SRC)Alligner.cpp -o $(BUILD)Alligner.o;
 	
-RNAread.o: RNAread.cpp RNAread.h
-	$(COMP) RNAread.cpp
+$(BUILD)RNAread.o: $(SRC)RNAread.cpp headers/RNAread.h
+	$(COMP) $(SRC)RNAread.cpp -o $(BUILD)RNAread.o;
 
-myRandomEngine.o: myRandomEngine.cpp ParameterHandler.h
-	$(COMP) myRandomEngine.cpp
+$(BUILD)myRandomEngine.o: $(SRC)myRandomEngine.cpp headers/ParameterHandler.h
+	$(COMP) $(SRC)myRandomEngine.cpp -o $(BUILD)myRandomEngine.o;
 
-Controller.o: Controller.cpp Controller.h ParameterHandler.h Alligner.h Downloader.h Run.h TypeConventions.h Operators.h ChromosomeInitializer.h myRandomEngine.h Estimator.h SimpleEstimator.h Simulator.h AdvancedEstimator.h DirichletMixture.h
-	$(COMP) Controller.cpp
+$(BUILD)Controller.o: $(SRC)Controller.cpp headers/Controller.h headers/ParameterHandler.h headers/Alligner.h headers/Downloader.h headers/Run.h headers/TypeConventions.h headers/Operators.h headers/ChromosomeInitializer.h headers/myRandomEngine.h headers/Estimator.h headers/SimpleEstimator.h headers/Simulator.h headers/AdvancedEstimator.h headers/DirichletMixture.h
+	$(COMP) $(SRC)Controller.cpp -o $(BUILD)Controller.o;
 	
-Estimator.o: Estimator.cpp Run.h ParameterHandler.h
-	$(COMP) Estimator.cpp
+$(BUILD)Estimator.o: $(SRC)Estimator.cpp headers/Run.h headers/ParameterHandler.h
+	$(COMP) $(SRC)Estimator.cpp -o $(BUILD)Estimator.o;
 	
-SimpleEstimator.o: SimpleEstimator.cpp Estimator.h
-	$(COMP) SimpleEstimator.cpp
+$(BUILD)SimpleEstimator.o: $(SRC)SimpleEstimator.cpp headers/Estimator.h
+	$(COMP) $(SRC)SimpleEstimator.cpp -o $(BUILD)SimpleEstimator.o;
 
-Simulator.o: Simulator.cpp Operators.h Run.h myRandomEngine.h
-	$(COMP) Simulator.cpp
+$(BUILD)Simulator.o: $(SRC)Simulator.cpp headers/Operators.h headers/Run.h headers/myRandomEngine.h
+	$(COMP) $(SRC)Simulator.cpp -o $(BUILD)Simulator.o;
 	
-AdvancedEstimator.o: AdvancedEstimator.cpp Estimator.h
-	$(COMP) AdvancedEstimator.cpp
+$(BUILD)AdvancedEstimator.o: $(SRC)AdvancedEstimator.cpp headers/Estimator.h
+	$(COMP) $(SRC)AdvancedEstimator.cpp -o $(BUILD)AdvancedEstimator.o;
 	
-Functions.o: Functions.cpp Functions.h
-	$(COMP) Functions.cpp
+$(BUILD)Functions.o: $(SRC)Functions.cpp headers/Functions.h
+	$(COMP) $(SRC)Functions.cpp -o $(BUILD)Functions.o;
 	
-DirichletDistribution.o: DirichletDistribution.cpp Functions.h
-	$(COMP) DirichletDistribution.cpp
+$(BUILD)DirichletDistribution.o: $(SRC)DirichletDistribution.cpp headers/Functions.h
+	$(COMP) $(SRC)DirichletDistribution.cpp -o $(BUILD)DirichletDistribution.o;
 	
-DirichletMixture.o: DirichletMixture.cpp Estimator.h myRandomEngine.h Functions.h DirichletDistribution.h
-	$(COMP) DirichletMixture.cpp
+$(BUILD)DirichletMixture.o: $(SRC)DirichletMixture.cpp headers/Estimator.h headers/myRandomEngine.h headers/Functions.h headers/DirichletDistribution.h
+	$(COMP) $(SRC)DirichletMixture.cpp -o $(BUILD)DirichletMixture.o;
 	
-ClusterComponent.o: ClusterComponent.cpp 
-	$(COMP) ClusterComponent.cpp
+$(BUILD)ClusterComponent.o: $(SRC)ClusterComponent.cpp 
+	$(COMP) $(SRC)ClusterComponent.cpp -o $(BUILD)ClusterComponent.o;
 	
-ClusterEstimator.o: ClusterEstimator.cpp Estimator.h myRandomEngine.h Operators.h
-	$(COMP) ClusterEstimator.cpp	
+$(BUILD)ClusterEstimator.o: $(SRC)ClusterEstimator.cpp headers/Estimator.h headers/myRandomEngine.h headers/Operators.h
+	$(COMP) $(SRC)ClusterEstimator.cpp -o $(BUILD)ClusterEstimator.o;	
