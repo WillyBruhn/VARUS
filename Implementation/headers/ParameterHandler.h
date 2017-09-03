@@ -111,6 +111,8 @@ public:
 	std::string lineLength(const std::string s, const unsigned int l, const unsigned int maxS);
 
 
+	void exit_text();
+
 	template<typename K>
 	void add_parameter(std::string name, K a);
 

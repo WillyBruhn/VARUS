@@ -122,6 +122,11 @@ void ParameterHandler::print_usage() {
     }
 }
 
+void ParameterHandler::exit_text(){
+	cout << "Try ./VARUS --help for more information." << endl;
+	exit(1);
+}
+
 ParameterHandler::ParameterHandler() {
 	/*! \brief All parameters are initialized with default-values. To change these values call
 	 * readArguments().

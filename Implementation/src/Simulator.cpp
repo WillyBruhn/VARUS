@@ -41,14 +41,17 @@ void Simulator::readInputRuns(){
 
 	st << param->pathToRuns << "/Runlist.txt";
 
-	const char * c = st.str().c_str();
+//	const char * c = st.str().c_str();
 	std::string line;
-	ifstream myfile (c);
+//	ifstream myfile (c);
+
+	ifstream myfile (st.str().c_str());
 
 	if (!myfile.is_open())
 	{
 		DEBUG(0,"Unable to open Runfile:" << st.str());
-		exit(-1);
+
+		param->exit_text();
 	}
 
 	while (getline (myfile,line))
@@ -69,7 +72,8 @@ void Simulator::readInputRuns(){
 
 	if(inputRuns.size() < 1) {
 		DEBUG(0,"Runlist.txt is empty: " << st.str());
-		exit(1);
+
+		param->exit_text();
 	}
 }
 
