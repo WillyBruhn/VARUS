@@ -18,6 +18,7 @@
 #include <map>
 #include "TypeConventions.h"
 #include <memory>
+#include <set>
 
 
 /*! \brief This class holds all the data, that is read in as command-line arguments.
@@ -25,6 +26,21 @@
  * A raw pointer is passed to all other instances, that need to have access to the input data.
  * A std::unique_ptr is created in main.cpp that is responsible for this instance.
  */
+
+/*
+ * Holds the description and the category for a given parameter.
+ * E.g. categories could be the level of details for each model.
+ * More general information should be on a higher level in the manual and
+ * should be easier accessible.
+ */
+
+struct Parameter{
+public:
+	std::string name;
+	std::string value;
+	std::string description;
+	std::string category;
+};
 
 class ParameterHandler
 {
@@ -94,10 +110,25 @@ public:
 
 	char **argv_saved;
 
+//	std::map <std::string, std::string> parameters;
+//	std::map<std::string, std::string> usage;
 
 
-	std::map <std::string, std::string> parameters;
-	std::map<std::string, std::string> usage;
+	std::map <std::string, Parameter> parameters;
+
+	enum paramCat{
+		QUICKSTART,
+		BASICSETTINGS,
+		DIRICHLETMIXTURE,
+		SIMULATION,
+		SIMPLEESTIMATOR,
+		ADVANCEDESTIMATOR,
+		CLUSTERESTIMATOR
+	};
+
+	std::map<paramCat, std::string> parameterCategories;		//key is name of the category in code, value is name of the category for the usage
+
+	void printParameterCategory(const paramCat cat, const unsigned int maxParLength);
 
 	void read_parameters_from_file(std::string path);	// uses parameters stored in the file
 
@@ -108,13 +139,16 @@ public:
     std::ostream & printParameters(std::ostream& os);	// prints the parameters
 
 	void print_usage();
+
+	const unsigned int lineWidth = 80;
+
 	std::string lineLength(const std::string s, const unsigned int l, const unsigned int maxS);
 
 
 	void exit_text();
 
 	template<typename K>
-	void add_parameter(std::string name, K a);
+	void add_parameter(std::string name, K a, std::string category = "", std::string description = "");
 
 	ParameterHandler();
 	~ParameterHandler();
