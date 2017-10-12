@@ -322,12 +322,14 @@ ParameterHandler::ParameterHandler() {
     	INITPARAM(components, parameterCategories[DIRICHLETMIXTURE], "sets the number of components of the dirichlet mixture or the cluster estimator. "
     			"Only relevant for estimators 3 and 4.");
 
-    numOfBlocks = 5000;
+    numOfBlocks = 29919;
     	INITPARAM(numOfBlocks,
     			parameterCategories[QUICKSTART],
     			"sets the number of blocks into which the genome should be divided."
-    			"Reading it automatically DOES NOT WORK YET! You must specify the correct number of blocks."
-    			" This is done because naturally it is expected that larger transcripts have a higher chance"
+    			"Reading it automatically DOES NOT WORK YET! You must specify the correct number of blocks. "
+				"To calculate numOfBlocks divide each transcript by blockLength rounded up. "
+				"The sum of these numbers is numOfBlocks."
+    			"This is done because naturally it is expected that larger transcripts have a higher chance"
     			" that reads are mapping to them. Also the coverage among the larger transcripts is desired "
     			"to be more or less uniformly distributed.");
 
