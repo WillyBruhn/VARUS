@@ -121,14 +121,19 @@ public:
 		BASICSETTINGS,
 		DIRICHLETMIXTURE,
 		SIMULATION,
-		SIMPLEESTIMATOR,
-		ADVANCEDESTIMATOR,
-		CLUSTERESTIMATOR
+		SIMPLEANDADVANCED,
+		CLUSTERESTIMATOR,
+		MANDATORY,
+		ESTIMATOR,
+		TEST,
+		COMMANDLINE
 	};
+
+	std::string STARmanual;
 
 	std::map<paramCat, std::string> parameterCategories;		//key is name of the category in code, value is name of the category for the usage
 
-	void printParameterCategory(const paramCat cat, const unsigned int maxParLength);
+	void printParameterCategory(const paramCat cat, const std::string des, const unsigned int maxParLength);
 
 	void read_parameters_from_file(std::string path);	// uses parameters stored in the file
 
@@ -141,6 +146,8 @@ public:
 	void print_usage();
 
 	const unsigned int lineWidth = 80;
+
+	std::string printTextWithWidthAndLeftOffset(const std::string s, const unsigned int l, const unsigned int off);
 
 	std::string lineLength(const std::string s, const unsigned int l, const unsigned int maxS);
 

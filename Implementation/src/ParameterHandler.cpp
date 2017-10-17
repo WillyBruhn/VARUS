@@ -24,6 +24,8 @@
 #include <string.h>
 #include <iomanip>
 
+#include "assert.h"
+
 using namespace std;
 
 int getoptCount = 0;
@@ -43,6 +45,54 @@ int getoptCount = 0;
 }
 #endif
 
+std::string ParameterHandler::printTextWithWidthAndLeftOffset(const std::string s, const unsigned int l, const unsigned int off){
+
+	assert(l > off);
+
+    std::string tmp;
+    std::stringstream ssin(s);
+    std::vector<std::string> wrds;
+    while (ssin >> tmp)
+    {
+        wrds.push_back(tmp);
+    }
+
+    unsigned int whitespaceSize = 1;
+    unsigned int ind = 0;
+
+    unsigned int curr_length = off;
+    string ret = "";
+	for(unsigned int j = 0; j < off; j++){
+		ret += " ";
+	}
+
+	for(unsigned int i = 0; i < wrds.size(); i++){
+		// adding the next words leads to stepping over the border
+		// +2 because of "\n"
+		if(curr_length + wrds[i].size() + whitespaceSize> l){
+			ret += "\n";
+			curr_length = off;
+
+			for(unsigned int j = 0; j < off; j++){
+				ret += " ";
+			}
+		}
+
+		ret += wrds[i] + " ";
+		curr_length += wrds[i].size() + whitespaceSize;
+	}
+
+//	unsigned int times = floor(s.size()/l);
+//
+//	for(unsigned int i = 1; i <= times; i++){
+//		s.insert(l*i,"\n\t\t");
+//	}
+//
+//	return s;
+
+	return ret;
+}
+
 string ParameterHandler::lineLength(string s, const unsigned int l, const unsigned int maxS){
     std::string tmp;
     std::stringstream ssin(s);
@@ -58,8 +108,13 @@ string ParameterHandler::lineLength(string s, const unsigned int l, const unsign
     unsigned int ind = 0;
 
     string par = wrds[0];
-    string val = wrds[1];
-    string ret = par;
+
+    string val;
+    if(wrds.size() >=2){
+    	val = wrds[1];
+    }
+
+	string ret = par;
 
 	for(unsigned int j = 0; j < maxS-par.size(); j++){
 		ret += " ";
@@ -70,7 +125,6 @@ string ParameterHandler::lineLength(string s, const unsigned int l, const unsign
 	for(unsigned int j = 0; j < maxS-par.size(); j++){
 		ret += " ";
 	}
-
 
     unsigned int curr_length = maxS;
 
@@ -106,12 +160,45 @@ void ParameterHandler::print_usage() {
 	 * The map<string,string> usage holds the name and its description for each parameter.
 	 */
 
-    cout << "Usage:\n";
-    cout << "Online-algorithm to download RNA-seqdata.\n";
+    string us = "Usage:\n"
+    		"Online-algorithm to automatically draw optimal samples from libraries of \n"
+    		"RNA-seqdata from the NCBI with the aim to achieve a coverage as high as \n"
+    		"possible, with as little data being downloaded as possible.\n"
+    		"In a stepwise procedure parts of these libraries are downloaded and aligned \n"
+    		"to the Genome of the species with STAR. At each step the run that is expected \n"
+    		"to yield the most increase in coverage, is chosen. \n\n"
+    		"Input: \n"
+    		"- Genome of the target species specified with --genomeDir\n"
+    		" The Genome files have to be prepared for STAR. After indexing the Folder should \n"
+    		" contain the following files: \n"
+    		" chrLenghth.txt, chrName.txt, chrNameLength.txt, chrStart.txt, Genome, \n"
+    		" genomeParameters.txt, SA, SAindex \n\n"
+    		+STARmanual+ "\n\n"
+    		"- Runlist named \"Runlist.txt\". \n"
+    		"Runlist-Format: \n"
+    		"@Run_acc total_spots total_bases bool:paired #tabulator separated \n"
+    		"ERR1328564	75912627	1	5041721263	0 \n"
+    		"ERR1328563	88959042	1	7616693616	0 \n"
+    		"DRR030358	20853417	1	750723012	0 \n"
+    		"					...						\n\n"
+    		"An exemplary call of VARUS might look like this:\n\n"
+    		"./VARUS --blockSize 5000 --batchSize 10000 --genomeDir <...> --pathToStar <...>\n"
+    		" --pathToRuns <...> --outFileNamePrefix <...> \n\n"
+    		"We divide the genome in many smaller blocks.This is done because on some larger \n"
+    		"transcripts the coverage is also desired to be evenly distributed.\n"
+    		"At each step a fixed number of reads is downloaded. We call a set of reads \n"
+    		"downloaded at once a batch.";
+
+//    cout << printTextWithWidth(us,80) << endl;
+    cout << us << endl;
+
+
+
     for(unsigned int i = 0; i < lineWidth; i++){
         cout << "-";
     }
     cout << "\n";
+
 
 
 //    map<string,string>::iterator i;
@@ -133,19 +220,42 @@ void ParameterHandler::print_usage() {
 //	cout << "Paths and basic settings:\n";
 //	cout << "-----------------------------------------------------\n";
 
-    printParameterCategory(QUICKSTART, maxParLength);
+    printParameterCategory(MANDATORY, "",maxParLength);
 
-    // paths and STAR-parameters
-    printParameterCategory(BASICSETTINGS,  maxParLength);
+//    // paths and STAR-parameters
+//    printParameterCategory(BASICSETTINGS,  maxParLength);
 
-    // estimators
-    printParameterCategory(SIMPLEESTIMATOR, maxParLength);
-    printParameterCategory(ADVANCEDESTIMATOR, maxParLength);
-    printParameterCategory(DIRICHLETMIXTURE, maxParLength);
-    printParameterCategory(CLUSTERESTIMATOR, maxParLength);
+    printParameterCategory(BASICSETTINGS, "", maxParLength);
+//
+//    // estimators
+    printParameterCategory(ESTIMATOR,
+    						"In each step of the algorithm the distributions of the reads in each run "
+    						"are estimated based on the reads that are downloaded already of this run."
+    						" We introduced a cost-function that assigns higher scores to runs that "
+    						"are expected to contain reads mapping to regions in the genome with only "
+    						"little observations at the given step. The download stops if the "
+    						"expected profit is lower than the cost for downloading another batch.",
+							maxParLength);
 
-    // simulation
-    printParameterCategory(SIMULATION, maxParLength);
+    printParameterCategory(SIMPLEANDADVANCED,
+    						"The simple estimator adds pseudocounts to the actual observations. The "
+    						"distribution of the reads is then estimated with the maximum-likelihood-method."
+    						" The advanced estimator adds the frequencies of the sum of all observations "
+    						"in all runs. This sum is multiplied with a weight lambda to control how "
+    						"similar the runs are to be assumed.",
+							maxParLength);
+
+    printParameterCategory(DIRICHLETMIXTURE, "", maxParLength);
+    printParameterCategory(CLUSTERESTIMATOR, "", maxParLength);
+//
+//    // simulation
+    printParameterCategory(SIMULATION, "", maxParLength);
+
+    printParameterCategory(COMMANDLINE,
+    						" Instead of typing all commands in the console you can read in and write to a file "
+    						" that stores all your settings. This file can also be read in for future program-runs"
+    						" to ensure to use the same settings.",
+							maxParLength);
 
 //	cout << parameterCategories[BASICSETTINGS];
 //	cout << ":\n-----------------------------------------------------\n";
@@ -170,12 +280,14 @@ void ParameterHandler::print_usage() {
 //    }
 }
 
-void ParameterHandler::printParameterCategory(const paramCat cat, const unsigned int maxParLength){
+void ParameterHandler::printParameterCategory(const paramCat cat, const std::string des, const unsigned int maxParLength){
 	/*
 	 * Prints the usage for the given parameter.
 	 */
 
-	cout << parameterCategories[cat] << ":\n";
+	cout << parameterCategories[cat] << ":\n";;
+	cout << printTextWithWidthAndLeftOffset(des,80,maxParLength) << "\n";
+
 
     for(unsigned int i = 0; i < lineWidth; i++){
         cout << "-";
@@ -188,29 +300,33 @@ void ParameterHandler::printParameterCategory(const paramCat cat, const unsigned
 
 	for(i = parameters.begin(); i != parameters.end(); i++) {
 		if(i->second.category == parameterCategories[cat]){
-			string out = "--" + i->first + ": " + i->second.value + "\n" + i->second.description;
-//			cout << lineLength(out,lineWidth,maxParLength);
+			string out = "--" + i->first + ": " + i->second.value;
 
-//			cout.width(maxParLength + 2 + 1 + 1);
-//			cout << "--" << i->first << ":";
-//			cout.fill(' ');
-//			cout.width(lineWidth);
-//			cout << i->second.value << "\n";
-//			cout << std::setw(10) << endl;
+			cout << lineLength(out,lineWidth,maxParLength) << "\n";
 
-			string par = "--" + i->first + ":";
-		    cout << left << setw(maxParLength) << setfill(separator) << par;
-		    cout << left << setw(lineWidth-maxParLength) << setfill(separator) << i->second.value << "\n\n";
-
-//		    cout << left << setw(maxParLength) << setfill(separator) << " ";
-
-		    // print all lines of the description
-		    for(unsigned int j = 0; j < i->second.description.size(); j += lineWidth-maxParLength){
-		    	cout << left << setw(maxParLength) << setfill(separator) << " ";
-		    	cout << left << setw(lineWidth-maxParLength) << setfill(separator) << i->second.description.substr(j,lineWidth-maxParLength) << "\n";
-
-		    }
-
+			string out2 = i->second.description;
+			cout << printTextWithWidthAndLeftOffset(out2,lineWidth,maxParLength);
+//
+////			cout.width(maxParLength + 2 + 1 + 1);
+////			cout << "--" << i->first << ":";
+////			cout.fill(' ');
+////			cout.width(lineWidth);
+////			cout << i->second.value << "\n";
+////			cout << std::setw(10) << endl;
+//
+//			string par = "--" + i->first + ":";
+//		    cout << left << setw(maxParLength) << setfill(separator) << par;
+//		    cout << left << setw(lineWidth-maxParLength) << setfill(separator) << i->second.value << "\n\n";
+//
+////		    cout << left << setw(maxParLength) << setfill(separator) << " ";
+//
+//		    // print all lines of the description
+//		    for(unsigned int j = 0; j < i->second.description.size(); j += lineWidth-maxParLength){
+//		    	cout << left << setw(maxParLength) << setfill(separator) << " ";
+//		    	cout << left << setw(lineWidth-maxParLength) << setfill(separator) << i->second.description.substr(j,lineWidth-maxParLength) << "\n";
+//
+//		    }
+//
 			cout << "\n" << endl;
 		}
     }
@@ -234,25 +350,32 @@ ParameterHandler::ParameterHandler() {
 
 	// initialize the parameterCategories first
 
-	parameterCategories[QUICKSTART] 		= "Quick Start";
+	parameterCategories[MANDATORY] 			= "Mandatory Inputs";
 	parameterCategories[BASICSETTINGS] 		= "Basic Settings";
 	parameterCategories[DIRICHLETMIXTURE] 	= "Dirichlet Mixture";
 	parameterCategories[SIMULATION] 		= "Simulation";
-	parameterCategories[SIMPLEESTIMATOR] 	= "Simple Estimator";
-	parameterCategories[ADVANCEDESTIMATOR] 	= "Advanced Estimator";
+	parameterCategories[SIMPLEANDADVANCED] 	= "Simple and advanced Estimator";
 	parameterCategories[CLUSTERESTIMATOR] 	= "Cluster Estimator";
+	parameterCategories[ESTIMATOR] 			= "Estimators";
+	parameterCategories[COMMANDLINE]		= "Commandline handling";
+
+	parameterCategories[TEST] 	= "Test";
+
+	STARmanual = "https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf";
 
 	param = this;
 	//"/home/willy/Bachelorarbeit/STAR-2.5.1b/source/"
     pathToSTAR 			= "/home/willy/Bachelorarbeit/STAR-2.5.1b/source/";
     	INITPARAM(pathToSTAR,
-    			parameterCategories[QUICKSTART],
+    			parameterCategories[MANDATORY],
     			"specifies the path to the executable of STAR, the software that"
     			" aligns the reads to the transcriptome/genome.");
 
 //	"/home/willy/workspace/UnitTests/ParameterHandler/script/"
 	pathToRuns 			= "../Tutorial/Drosophila/";
-    	INITPARAM(pathToRuns, parameterCategories[QUICKSTART], "specifies the path to Runlist.txt.");
+    	INITPARAM(pathToRuns,
+    			parameterCategories[MANDATORY],
+				"specifies the path to Runlist.txt.");
 
 //	readFilesIn 		= "default";
 //    	INITPARAM(readFilesIn, "specifies the path to the folder in which the ");
@@ -260,28 +383,38 @@ ParameterHandler::ParameterHandler() {
 //    	"/home/willy/Bachelorarbeit/Manager/genome/"
 	genomeDir 			= "/home/willy/Bachelorarbeit/Manager/genome/";
     	INITPARAM(genomeDir,
-    			parameterCategories[QUICKSTART],
+    			parameterCategories[MANDATORY],
 				"specifies the path to the genome/transcriptome"
     			" that you are investigating.");
 
     outFileNamePrefix 	= "../Tutorial/Drosophila/";
-    	INITPARAM(outFileNamePrefix, parameterCategories[QUICKSTART], "specifies the path in which all output of VARUS should be stored.");
+    	INITPARAM(outFileNamePrefix,
+    			parameterCategories[MANDATORY],
+				"specifies the path in which all output of VARUS should be stored.");
 
     runThreadN = 4;
-    	INITPARAM(runThreadN, parameterCategories[BASICSETTINGS], "Number of threads to run STAR with. Read STAR-manual for more information.");
+    	INITPARAM(runThreadN,
+    			parameterCategories[BASICSETTINGS],
+				"Number of threads to run STAR parallel with. Read STAR-manual for more information.\n");
 
     blockSize = 5000;		// <---- 5000 default
-    	INITPARAM(blockSize, parameterCategories[QUICKSTART], "the number of bases one block will have. "
+    	INITPARAM(blockSize,
+    			parameterCategories[BASICSETTINGS],
+				"the number of bases one block will have. "
     			"This is done in order to be able"
     			" to compare the coverage of larger chromosomes with smaller ones, since "
     			"larger chromosomes will naturally have more reads mapped to them than smaller ones.");
 
     batchSize = 100000;
-    	INITPARAM(batchSize, parameterCategories[QUICKSTART], "the number of reads to be downloaded in each step. "
-    			"Typically a library contains about 10+e6 to 10+e7 reads.");
+    	INITPARAM(batchSize,
+    			parameterCategories[BASICSETTINGS],
+				"the number of reads to be downloaded in each step. "
+    			"Typically a library contains about 10e+6 to 10e+7 reads.");
 
 	pseudoCount = 1;
-    	INITPARAM(pseudoCount, parameterCategories[SIMPLEESTIMATOR], "adds a pseudocount to all possible observations. Only relevant for "
+    	INITPARAM(pseudoCount,
+    			parameterCategories[SIMPLEANDADVANCED],
+				"adds a pseudocount to all possible observations. Only relevant for "
     			"estimators 1, 2.");
 
 //    coverage = 10;
@@ -289,19 +422,28 @@ ParameterHandler::ParameterHandler() {
 //    zValue = 20;
 //    	PARAM(zValue);
     lambda = 10.0;
-    	INITPARAM(lambda, parameterCategories[ADVANCEDESTIMATOR], "parameter for estimator 2.");
+    	INITPARAM(lambda,
+    			parameterCategories[SIMPLEANDADVANCED],
+				"parameter for estimator 2. The weight with which the sum of all observations"
+				" in all runs is added as additional pseudocounts for the estimation.");
 
 //    logScore = 1;	// 1 == logScore, 0 == minScore
 //    	PARAM(logScore);
     createDice = 0;		// 1 => creating dice, 0 => other options
-    	INITPARAM(createDice, parameterCategories[SIMULATION], "if set to 1 dice will be created from real runs."
+    	INITPARAM(createDice,
+    			parameterCategories[SIMULATION],
+				"if set to 1 dice will be created from real runs."
     			"Only needed for testing/simulation-purposes.");
 
 	simulation = 0;		// 1 => running simulation, 0 => real downloadprogramm
-    	INITPARAM(simulation, parameterCategories[SIMULATION], "if set to 1, the program will simulate downloads.");
+    	INITPARAM(simulation,
+    			parameterCategories[SIMULATION],
+				"if set to 1, the program will simulate downloads.");
 
-	estimator = 1;	// 1 == simple, 2 == advanced, 3 == DM, else naive
-    	INITPARAM(estimator, parameterCategories[BASICSETTINGS], "1 == simple, 2 == advanced, 3 == dirichlet mixture, 4 == cluster estimator, else downloads will "
+	estimator = 2;	// 1 == simple, 2 == advanced, 3 == DM, else naive
+    	INITPARAM(estimator,
+    			parameterCategories[BASICSETTINGS],
+				"1 == simple, 2 == advanced, 3 == dirichlet mixture, 4 == cluster estimator, else downloads will "
     			"be done choosing the runs randomly. Note that if you choose to download randomly, you "
     			"should specify maxBatches in order to let the program end at some point.");
 
@@ -309,22 +451,30 @@ ParameterHandler::ParameterHandler() {
 //    	INITPARAM(dieList, "1== uses \"Dielist.txt\", 0 == uses \"Runlist.txt\"");
 
     lessInfo = 0; 	// 1 == Toy prints less info
-    	INITPARAM(lessInfo, parameterCategories[SIMULATION], "if set to 1, Toy prints less info. Only Relevant for simulation.");
+    	INITPARAM(lessInfo,
+    			parameterCategories[SIMULATION],
+				"if set to 1, Toy prints less info. Only Relevant for simulation.");
 
     pathToDice 	= "/home/willy/Bachelorarbeit/Manager/test138/";
-    	INITPARAM(pathToDice, parameterCategories[SIMULATION], "specifies the path to the dice. Dice are saved in csv-format.");
+    	INITPARAM(pathToDice,
+    			parameterCategories[SIMULATION],
+				"specifies the path to the dice. Dice are saved in csv-format.");
 
     cost = 100000000000;
-    	INITPARAM(cost, parameterCategories[BASICSETTINGS], "sets the cost for downloading one read."
+    	INITPARAM(cost,
+    			parameterCategories[ESTIMATOR],
+				"sets the cost for downloading one read."
     			" The cost-function is a monotonically increasing function with monotonically decreasing derivative.");
 
     components = 1;
-    	INITPARAM(components, parameterCategories[DIRICHLETMIXTURE], "sets the number of components of the dirichlet mixture or the cluster estimator. "
+    	INITPARAM(components,
+    			parameterCategories[DIRICHLETMIXTURE],
+				"sets the number of components of the dirichlet mixture or the cluster estimator. "
     			"Only relevant for estimators 3 and 4.");
 
     numOfBlocks = 29919;
     	INITPARAM(numOfBlocks,
-    			parameterCategories[QUICKSTART],
+    			parameterCategories[BASICSETTINGS],
     			"sets the number of blocks into which the genome should be divided."
     			"Reading it automatically DOES NOT WORK YET! You must specify the correct number of blocks. "
 				"To calculate numOfBlocks divide each transcript by blockLength rounded up. "
@@ -334,71 +484,102 @@ ParameterHandler::ParameterHandler() {
     			"to be more or less uniformly distributed.");
 
     trainingsIterations = 1;
-    	INITPARAM(trainingsIterations, parameterCategories[DIRICHLETMIXTURE], "the number of iterations the dirichlet mixture or cluster estimator will be "
+    	INITPARAM(trainingsIterations,
+    			parameterCategories[DIRICHLETMIXTURE],
+				"the number of iterations the dirichlet mixture or cluster estimator will be "
     			"trained in each step. Only relevant for estimators 3 and 4.");
 
     loadAllOnce = 0;
-    	INITPARAM(loadAllOnce, parameterCategories[BASICSETTINGS], "if set to 1, a single batch from each run will be downloaded once, before"
+    	INITPARAM(loadAllOnce,
+    			parameterCategories[ESTIMATOR],
+				"if set to 1, a single batch from each run will be downloaded once, before"
     			" the estimation process starts. Useful for the expensive estimators 3 and 4."
     			);
 
 	verbosityDebug = 0;
-		INITPARAM(verbosityDebug, parameterCategories[BASICSETTINGS], "sets the debug-verbosity-level. There are 4 verbosity-levels. Higher values mean more output.");
+		INITPARAM(verbosityDebug,
+				parameterCategories[BASICSETTINGS],
+				"sets the debug-verbosity-level. There are 4 verbosity-levels. Higher values mean more output.");
 //		verbosity_out_level = verbosityDebug;
 
 	newtonIterations = 10;
-		INITPARAM(newtonIterations, parameterCategories[DIRICHLETMIXTURE], "number of times the newtons method is done to find the maximum-likelihood"
+		INITPARAM(newtonIterations,
+				parameterCategories[DIRICHLETMIXTURE],
+				"number of times the newtons method is done to find the maximum-likelihood"
 				" for the alpha-sum. Only relevant for estimator 3.");
 
 	newtonPrecision = 0.001;
-		INITPARAM(newtonPrecision, parameterCategories[DIRICHLETMIXTURE], "threshold at which the newtons-method will aboard, and return the value."
+		INITPARAM(newtonPrecision,
+				parameterCategories[DIRICHLETMIXTURE],
+				"threshold at which the newtons-method will aboard, and return the value."
 				" Only relevant for estimator 3.");
 
 	readParametersFromFile = 0;
-		INITPARAM(readParametersFromFile, parameterCategories[BASICSETTINGS], "if set to 1, the program will look for a file specified with "
+		INITPARAM(readParametersFromFile,
+				parameterCategories[COMMANDLINE],
+				"if set to 1, the program will look for a file specified with "
 				"pathToParameters and interpret its content as command-line arguments. "
 				"These parameters will then be used to run the program. Note: additional parameters"
 				" passed with the command line will overwrite the parameters read from the parameters-file.");
 			readAllready = false;
 
 	pathToParameters = "";
-		INITPARAM(pathToParameters, parameterCategories[BASICSETTINGS], "specifies the path and name to the parameters-file that should be read in and written to.");
+		INITPARAM(pathToParameters,
+				parameterCategories[COMMANDLINE],
+				"specifies the path and name to the parameters-file that should be read in and written to.");
 
 	exportParametersToFile = 0;
-		INITPARAM(exportParametersToFile, parameterCategories[BASICSETTINGS], "if set to 1 the parameters used for this execution of the program"
+		INITPARAM(exportParametersToFile,
+				parameterCategories[COMMANDLINE],
+				"if set to 1 the parameters used for this execution of the program"
 				" will be exported into a parametersfile");
 
 	exportObservationsToFile = 0;
-		INITPARAM(exportObservationsToFile, parameterCategories[BASICSETTINGS], "if set to 1 the program will output the observations in all"
-				" runs in all steps into CSV-files. NOTE: Using this option can lead to performance-issues.");
+		INITPARAM(exportObservationsToFile,
+				parameterCategories[BASICSETTINGS],
+				"if set to 1 the program will output the observations in all"
+				" runs in all steps into CSV-files. This does not refer to the fasta.files"
+				" but to the quantitative distributions of the reads among the genome.\n"
+				"WARNING: This will overwrite older files! \n"
+				"NOTE: Using this option can lead to performance-issues.");
 
 	deleteLater = 0;
-		INITPARAM(deleteLater, parameterCategories[BASICSETTINGS], "if set to 1, the fasta-files and alignment-files will be deleted after"
+		INITPARAM(deleteLater,
+				parameterCategories[BASICSETTINGS],
+				"if set to 1, the fasta-files and alignment-files will be deleted after"
 				" they are used to identify the next run to be downloaded from. If you want to use the "
 				"reads for your genome-annotation you should not use this option.");
 
 	maxBatches = 100;
-		INITPARAM(maxBatches, parameterCategories[QUICKSTART], "if  maxBatches > 0, the program will exit as soon as it loaded maxBatches batches.");
+		INITPARAM(maxBatches,
+				parameterCategories[BASICSETTINGS],
+				"if  maxBatches > 0, the program will exit as soon as it loaded maxBatches batches.");
 
 	randomSeed = -1;
-		INITPARAM(randomSeed, parameterCategories[BASICSETTINGS], "if randomSeed > 0, the program will have deterministic results. Else the "
+		INITPARAM(randomSeed,
+				parameterCategories[BASICSETTINGS],
+				"if randomSeed > 0, the program will have deterministic results. Else the "
 				"seed will be set according to the current time");
 
 	profitCondition = 0;
 		INITPARAM(profitCondition,
-				parameterCategories[BASICSETTINGS],
+				parameterCategories[ESTIMATOR],
 				"if profitConditon == 1, the program will exit if the"
 				" expected profit falls below 0. Note that the expected profit can lead to the program downloading"
 				" for a very long time, since some of the estimators tend to be very optimistic "
 				"if the parameters are not set adequately.");
 
 	ignoreReadNum = 0;
-		INITPARAM(ignoreReadNum, parameterCategories[BASICSETTINGS], "Only important for simulation: if ignoreReadNum == 1, it will be ignored in case of a simulation "
+		INITPARAM(ignoreReadNum,
+				parameterCategories[BASICSETTINGS],
+				"Only important for simulation: if ignoreReadNum == 1, it will be ignored in case of a simulation "
 				"if a run has no reads left. Otherwise the run is not an option to download from after the maximum number of reads"
 				" is downloaded from this run.")
 
 	simpleDM = 0;
-		INITPARAM(simpleDM, parameterCategories[DIRICHLETMIXTURE], "refers to estimator 3. With this estimation procedure the calculation times are a bit better "
+		INITPARAM(simpleDM,
+				parameterCategories[DIRICHLETMIXTURE],
+				"refers to estimator 3. With this estimation procedure the calculation times are a bit better "
 				"than with the normal dirichlet mixture. However the estimation is not that accurate.");
 
 //	kMeansIterations = 10;
@@ -406,7 +587,9 @@ ParameterHandler::ParameterHandler() {
 //				"the k-means-cluster-algorithm.");
 
 	exportNewtons = 0;
-		INITPARAM(exportNewtons, parameterCategories[DIRICHLETMIXTURE], "exports the steps of the newtons method. Deprecated since it is very expensive."
+		INITPARAM(exportNewtons,
+				parameterCategories[DIRICHLETMIXTURE],
+				"exports the steps of the newtons method. Deprecated since it is very expensive."
 				" Only relevant for estimator 3.");
 
 
