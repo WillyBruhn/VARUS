@@ -74,6 +74,8 @@ public:
 	int randomSeed;
 	int profitCondition;
 
+	std::string fastqDumpCall;
+
 
 	uI newtonIterations;
 	double newtonPrecision;

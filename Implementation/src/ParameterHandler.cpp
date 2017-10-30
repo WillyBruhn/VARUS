@@ -364,6 +364,13 @@ ParameterHandler::ParameterHandler() {
 	STARmanual = "https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf";
 
 	param = this;
+
+	fastqDumpCall = "fastq-dump";
+	INITPARAM(fastqDumpCall,
+			parameterCategories[MANDATORY],
+			"if fastq-dump is not in your classpath, you can specify "
+			"the path aswell like /path/to/fastqdump/./fastq-dump.");
+
 	//"/home/willy/Bachelorarbeit/STAR-2.5.1b/source/"
     pathToSTAR 			= "/home/willy/Bachelorarbeit/STAR-2.5.1b/source/";
     	INITPARAM(pathToSTAR,
@@ -621,7 +628,7 @@ void ParameterHandler::readArguments(int argc, char *argv[]) {
 			{"pathToDice", 1, nullptr, 'T'},
 			{"pathToRuns", 1, nullptr, 'R'},
 			{"pathToSTAR", 1, nullptr, 'S'},
-//			{"readFilesIn", 1, nullptr, 'f'},
+			{"fastqDumpCall", 1, nullptr, 'f'},
             {"pseudoCount", 1, nullptr, 'p'},
 			{"runThreadN", 1, nullptr, 'N'},
 			{"simulation", 1, nullptr, 's'},
@@ -736,10 +743,10 @@ void ParameterHandler::readArguments(int argc, char *argv[]) {
             	PARAM(pathToSTAR);
             break;
 
-//        case 'f':
-//            readFilesIn = std::string(optarg);
-//            	PARAM(readFilesIn);
-//            break;
+        case 'f':
+        	fastqDumpCall = std::string(optarg);
+            	PARAM(fastqDumpCall);
+            break;
 
         case 'p':
             pseudoCount = std::stof(optarg);

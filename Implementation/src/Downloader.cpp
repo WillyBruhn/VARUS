@@ -27,12 +27,12 @@ std::string Downloader::shellCommand(Run *r){
 
     if(r->paired == false)
     {
-        s = "fastq-dump -N " + n.str() + " -X " + x.str() + " -O " + param->outFileNamePrefix + r->accesionId + "/"
+        s = param->fastqDumpCall + " -N " + n.str() + " -X " + x.str() + " -O " + param->outFileNamePrefix + r->accesionId + "/"
          + "N" + n.str() + "X" + x.str() + "/ --fasta " + r->accesionId;
     }
     else
     {
-        s = "fastq-dump -N " + n.str() + " -X " + x.str() + " -O " + param->outFileNamePrefix + r->accesionId + "/"
+        s = param->fastqDumpCall + " -N " + n.str() + " -X " + x.str() + " -O " + param->outFileNamePrefix + r->accesionId + "/"
           + "N" + n.str() + "X" + x.str() + "/ --fasta " + r->accesionId + " --split-files";
     }
     return s;
