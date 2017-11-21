@@ -143,9 +143,13 @@ void ChromosomeInitializer::create_transcript_units(UUmap &totalObservations) {
 }
 
 void ChromosomeInitializer::initializeRuns(std::vector<Run*> &runs) {
-	/*! \brief Reads in information about the runs such as numOfSpots, accessionId from
-	 * the Runlist.txt.
+	/*! \brief Reads in information about the runs from the file Runlist.txt.
 	 *
+	 * Example:
+	 * @Run_acc	total_spots	total_bases	bool:paired	#tabulator separated
+	 * ERR1328564	75912627	15041721263	0
+	 * ERR1328563	88959042	17616693616	0
+	 * 				   ...
 	 */
 
 	string s = param->pathToRuns + "/Runlist.txt";
@@ -173,6 +177,7 @@ void ChromosomeInitializer::initializeRuns(std::vector<Run*> &runs) {
 
 				// transcriptUnits.size() ca 30 000 for blockSize = 5000
 				DEBUG(4, "blsize:" << transcriptUnitsByNames.size());
+
 				Run *r = new Run(runName, transcriptUnits.size(),
 						atoi(spots.c_str()), param->batchSize);
 
@@ -202,17 +207,14 @@ void ChromosomeInitializer::initializeRuns(std::vector<Run*> &runs) {
 void ChromosomeInitializer::initializeSigma(Run *r) {
 	/*! \brief The sigma-vector contains the order in which the batches should be downloaded.
 	 *  The order is randomized so that potential biases in the order of the reads
-	 *  in the run are minimalized. The second argument is the seed used for the suffler.
+	 *  in the run are minimalized. The second argument is the seed used for the shuffler.
 	 *  If set to a positive value, the seed is set, else the seed is derived randomly
 	 *  according to the current time.
 	 */
 
-	// if the vector is allready initialized we need to first delete it
+	// if the vector is already initialized we need to first delete it
 	if(r->sigma.size() > 0) r->sigma.clear();
 
-//	if(0 < t){
-//		ran->seed(t);
-//	}
 
 	DEBUG(3,"Max number of batches for run " << r->accesionId << " " << r->maxNumOfBatches);
 	// set all values

@@ -56,10 +56,10 @@ void Downloader::nextBatchIndices(Run *r) {
 bool Downloader::getBatch(Run *r, bool all)
 {
 	/*! \brief	The next batch will be downloaded according to the sigma-vector.
-	 * 	The command for the download is invoked throught the shell and calls fastq-dump.
+	 * 	The command for the download is invoked through the shell and calls fastq-dump.
 	 *
 	 *	Sometimes batches are not loaded correctly. This is a problem with fastq-dump.
-	 *	In this case the reads can not be alligned. This function returns "false", if the
+	 *	In this case the reads can not be aligned. This function returns "false", if the
 	 *	download failed.
 	 */
 
