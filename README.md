@@ -1,0 +1,65 @@
+# VARUS
+Program to draw optimal samples out of RNA-Seq Libraries for the purpose of gene-finding.
+
+# INSTALLATION
+## LINUX
+```sh
+git clone https://github.com/WillyBruhn/VARUS.git
+
+# change to the source
+cd VARUS/Implementation
+
+# build VARUS
+make
+``` 
+
+# Tutorial
+## Downloading reads of Drosophila melanogaster from the NCBI:
+Find this example also under Tutorial/GettingStarted.
+### Requirements:
+Check that you have fastq-dump installed [https://ncbi.github.io/sra-tools/fastq-dump.html].  
+Check that you have STAR installed [https://github.com/alexdobin/STAR].  
+Check that you have a genome-file for Drosophila melanogaster.  
+
+### Step 0:
+Create a new folder MyFirstTest and change into it:
+```sh
+mkdir MyFirstTest
+cd MyFirstTest
+``` 
+
+### Step 1: 
+First you need to download the accession-ids of the runs.
+You do this with the RunListRetriever. Open the terminal in the folder 
+/VARUS/RunListRetriever. Run the RunListRetriever:
+        
+```sh
+./RunListRetriever --outFileDir <absolute path>/MyFirstTest
+``` 
+By default this downloads the accession-ids of the first 100 runs of 
+Drosophila melanogaster from the NCBI. For other species and other 
+runs check
+```sh 
+./RunListRetriever -h. 
+```
+The resulting file "Runlist.txt", located in MyFirstTest, contains the accession-ids.
+
+### Step 2: 
+Copy the file "VARUS/Tutorial/Drosophila/parametersCopy" into the folder MyFirstTest.
+Open parametersCopy and make changes to arguments marked with < >.
+
+### Step 3: 
+Call VARUS:
+```sh        
+/VARUS/Implementation/./VARUS --readParametersFromFile 1 --pathToParameters <absolute path>/MyFirstTest
+``` 
+This chooses 10 times a run to download from and downloads 1000 000 reads each time.
+The downloaded reads and the alignments can then be found in /MyFirstTest/AdvancedEstimator/.
+
+### Step 4: 
+Call the visualization-tool:
+```sh
+/VARUS/VisualizationTool/./visOverview.R <absolute path>/MyFirstTest/ AdvancedEstimator
+```        
+The result might look like this:
+![alternate text](/Tutorial/ComparisonNEW.png)
