@@ -39,9 +39,11 @@ public:
 	void shuffleExceptLast(std::vector<V> &vec){
 //		std::random_shuffle(vec.begin(), vec.end(), std::default_random_engine(0));
 
-		typename std::vector<V>::iterator i = vec.end();
-		i--;
-		std::shuffle(vec.begin(), i, gen);
+		if(vec.size() > 1){
+			typename std::vector<V>::iterator i = vec.end();
+			i--;
+			std::shuffle(vec.begin(), i, gen);
+		}
 	}
 
 	template<typename V>
