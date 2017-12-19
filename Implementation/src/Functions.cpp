@@ -292,3 +292,5 @@ double newtonsMethod(double start, double (*f)(double), double (*df)(double)){
 //	return x_k;
 	return x_k;
 }
+
+

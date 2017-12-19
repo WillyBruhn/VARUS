@@ -31,14 +31,14 @@ VARUSTest: $(BUILD)main_Test.o $(BUILD)ParameterHandler.o $(BUILD)Operators.o $(
 	$(LINK) $(BUILD)main_Test.o $(BUILD)ParameterHandler.o $(BUILD)Operators.o $(BUILD)Run.o $(BUILD)ChromosomeInitializer.o $(BUILD)Downloader.o $(BUILD)Alligner.o $(BUILD)RNAread.o $(BUILD)Controller.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)Functions.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o -o VARUSTest
 
 
-CatchTest: $(Test)catch.o $(TestSources)test_myRandomEngine.cpp $(TestSources)test_RunListRetriever.cpp
+CatchTest: $(Test)catch.o $(TestSources)test_myRandomEngine.cpp $(TestSources)test_RunListRetriever.cpp  $(TestSources)test_systemFunctions.cpp
 	$(LINK) $(Test)catch.o -o $(Test)CatchTest
 
 #CatchTest: $(Test)catch.o $(BUILD)ParameterHandler.o $(BUILD)ChromosomeInitializer.o $(BUILD)Alligner.o $(BUILD)Downloader.o $(BUILD)Run.o $(BUILD)Operators.o $(BUILD)RNAread.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)Functions.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o
 #	$(LINK) $(Test)catch.o $(BUILD)ParameterHandler.o $(BUILD)ChromosomeInitializer.o $(BUILD)Alligner.o $(BUILD)Downloader.o $(BUILD)Run.o $(BUILD)Operators.o $(BUILD)RNAread.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)Functions.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o -o $(Test)CatchTest
 
 
-$(Test)catch.o: $(Test)catch.cpp $(Test)catch.hpp $(TestSources)test_myRandomEngine.cpp $(TestSources)test_RunListRetriever.cpp $(TestSrc)commandline.cpp
+$(Test)catch.o: $(Test)catch.cpp $(Test)catch.hpp $(TestSources)test_myRandomEngine.cpp $(TestSources)test_RunListRetriever.cpp $(TestSources)test_systemFunctions.cpp $(TestSrc)commandline.cpp
 		$(COMP) $(Test)catch.cpp -o $(Test)catch.o;
 
 #$(Test)catch.o: $(Test)catch.cpp $(Test)catch.hpp headers/debug.h headers/TypeConventions.h headers/ParameterHandler.h headers/Warning.h headers/Alligner.h headers/Downloader.h headers/Run.h headers/#ChromosomeInitializer.h headers/RNAread.h headers/myRandomEngine.h headers/Estimator.h headers/SimpleEstimator.h headers/Simulator.h headers/AdvancedEstimator.h headers/DirichletMixture.h headers/#DirichletDistribution.h headers/Functions.h

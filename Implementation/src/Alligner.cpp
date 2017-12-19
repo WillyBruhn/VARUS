@@ -9,6 +9,9 @@
 #include "../headers/debug.h"
 #include "math.h"
 
+#include "systemFunctions.cpp"
+
+
 using namespace std;
 
 Alligner::Alligner(ParameterHandler *p) {
@@ -44,16 +47,25 @@ std::string Alligner::shellCommand(Run *r) {
 	        }
 	        else
 	        {
-	            std::string t = r->accesionId + "/" + "N" + n.str() + "X" + x.str() + "/";
-	                        s =      param->pathToSTAR + "STAR "
-	                        + "--runThreadN " + thread.str() + " "
-	                        + "--genomeDir " + param->genomeDir + " "
-	                        + "--readFilesIn " + param->outFileNamePrefix + t + r->accesionId + "_1.fasta "
-	                        + param->outFileNamePrefix + t + r->accesionId + "_2.fasta "
-	                        + "--outFileNamePrefix " + param->outFileNamePrefix + t
+	        	std::string t = r->accesionId + "/" + "N" + n.str() + "X" + x.str() + "/";
+
+	        	vector<string> files = filesWithExtInFolder(t,".fasta");
+
+	        	string f = "";
+	        	for(unsigned int i = 0; i < files.size(); i++){
+	        		 f += files[i] + " ";
+	        	}
+
+				s =      param->pathToSTAR + "STAR "
+				+ "--runThreadN " + thread.str() + " "
+				+ "--genomeDir " + param->genomeDir + " "
+//				+ "--readFilesIn " + param->outFileNamePrefix + t + r->accesionId + "_1.fasta "
+//				+ param->outFileNamePrefix + t + r->accesionId + "_2.fasta "
+				+ f
+				+ "--outFileNamePrefix " + param->outFileNamePrefix + t
 //							+ " --outFilterScoreMinOverLread 0 --outFilterMatchNminOverLread 0 --outFilterMatchNmin 0"
 //	                        + " --outSAMtype BAM";
-	                        ;
+				;
 	        }
 	return s;
 }

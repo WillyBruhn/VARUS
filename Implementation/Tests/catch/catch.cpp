@@ -16,8 +16,9 @@
 //#include "../../src/Functions.cpp"
 
 //#include "../../src/myRandomEngine.cpp"
-#include "../Tests/unitTests/src/test_myRandomEngine.cpp"
+//#include "../Tests/unitTests/src/test_myRandomEngine.cpp"
 #include "../Tests/unitTests/src/test_RunListRetriever.cpp"
+#include "../Tests/unitTests/src/test_systemFunctions.cpp"
 
 #include "headers/commandline.h"
 
