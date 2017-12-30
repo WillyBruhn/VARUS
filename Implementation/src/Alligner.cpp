@@ -61,8 +61,10 @@ std::string Alligner::shellCommand(Run *r) {
 				+ "--genomeDir " + param->genomeDir + " "
 //				+ "--readFilesIn " + param->outFileNamePrefix + t + r->accesionId + "_1.fasta "
 //				+ param->outFileNamePrefix + t + r->accesionId + "_2.fasta "
+
+				+ "--readFilesIn "
 				+ f
-				+ "--outFileNamePrefix " + param->outFileNamePrefix + t
+				+ " --outFileNamePrefix " + param->outFileNamePrefix + t
 //							+ " --outFilterScoreMinOverLread 0 --outFilterMatchNminOverLread 0 --outFilterMatchNmin 0"
 //	                        + " --outSAMtype BAM";
 				;

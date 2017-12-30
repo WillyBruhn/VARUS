@@ -27,6 +27,9 @@
 #          final.bam and some statistics regarding the runs that were
 #          downloaded 
 #
+#
+#
+# switch off options with --no<optionName>
 #--------------------------------------------------------------------
 
 use strict;

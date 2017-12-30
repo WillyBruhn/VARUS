@@ -23,6 +23,6 @@ outPath=args[2]
 dist = read.csv2(file)
 
 pdf(paste(outPath,"stats.pdf",sep=""))
-#barplot(dist$totalObservations, ylim = c(0,200))
-barplot(dist$totalObservations)
+barplot(dist$totalObservations, ylim = c(0,10000))
+#barplot(dist$totalObservations)
 dev.off()
