@@ -1,7 +1,10 @@
 COMP =	g++ -std=c++11 -c -O3
+#COMP =	g++ -std=c++11 -c -DDEBUG -g
 LINK =	g++ -std=c++11
 
 BUILD = ./bin/
+#BUILD = ./deb/
+
 SRC = ./src/
 HEADERS = ./headers/
 
@@ -31,14 +34,14 @@ VARUSTest: $(BUILD)main_Test.o $(BUILD)ParameterHandler.o $(BUILD)Operators.o $(
 	$(LINK) $(BUILD)main_Test.o $(BUILD)ParameterHandler.o $(BUILD)Operators.o $(BUILD)Run.o $(BUILD)ChromosomeInitializer.o $(BUILD)Downloader.o $(BUILD)Alligner.o $(BUILD)RNAread.o $(BUILD)Controller.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)Functions.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o -o VARUSTest
 
 
-CatchTest: $(Test)catch.o $(TestSources)test_myRandomEngine.cpp $(TestSources)test_RunListRetriever.cpp  $(TestSources)test_systemFunctions.cpp
-	$(LINK) $(Test)catch.o -o $(Test)CatchTest
+CatchTest: $(Test)catch.o $(BUILD)systemFunctions.o $(BUILD)ParameterHandler.o $(BUILD)Alligner.o $(BUILD)Run.o $(BUILD)RNAread.o
+	$(LINK) $(Test)catch.o $(BUILD)systemFunctions.o $(BUILD)ParameterHandler.o $(BUILD)Alligner.o $(BUILD)Run.o $(BUILD)RNAread.o -o $(Test)CatchTest
 
 #CatchTest: $(Test)catch.o $(BUILD)ParameterHandler.o $(BUILD)ChromosomeInitializer.o $(BUILD)Alligner.o $(BUILD)Downloader.o $(BUILD)Run.o $(BUILD)Operators.o $(BUILD)RNAread.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)Functions.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o
 #	$(LINK) $(Test)catch.o $(BUILD)ParameterHandler.o $(BUILD)ChromosomeInitializer.o $(BUILD)Alligner.o $(BUILD)Downloader.o $(BUILD)Run.o $(BUILD)Operators.o $(BUILD)RNAread.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)Functions.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o -o $(Test)CatchTest
 
 
-$(Test)catch.o: $(Test)catch.cpp $(Test)catch.hpp $(TestSources)test_myRandomEngine.cpp $(TestSources)test_RunListRetriever.cpp $(TestSources)test_systemFunctions.cpp $(TestSrc)commandline.cpp
+$(Test)catch.o: $(Test)catch.cpp $(Test)catch.hpp $(TestSources)test_myRandomEngine.cpp $(TestSources)test_RunListRetriever.cpp $(TestSources)test_systemFunctions.cpp $(TestSrc)commandline.cpp $(TestSources)test_Aligner.cpp
 		$(COMP) $(Test)catch.cpp -o $(Test)catch.o;
 
 #$(Test)catch.o: $(Test)catch.cpp $(Test)catch.hpp headers/debug.h headers/TypeConventions.h headers/ParameterHandler.h headers/Warning.h headers/Alligner.h headers/Downloader.h headers/Run.h headers/#ChromosomeInitializer.h headers/RNAread.h headers/myRandomEngine.h headers/Estimator.h headers/SimpleEstimator.h headers/Simulator.h headers/AdvancedEstimator.h headers/DirichletMixture.h headers/#DirichletDistribution.h headers/Functions.h
@@ -47,8 +50,10 @@ $(Test)catch.o: $(Test)catch.cpp $(Test)catch.hpp $(TestSources)test_myRandomEng
 clean:
 	rm -f $(BUILD)*.o VARUS VARUSTest $(Test)CatchTest rm -f $(Test)*.o
 
-VARUS: $(BUILD)main.o $(BUILD)ParameterHandler.o $(BUILD)Controller.o $(BUILD)ChromosomeInitializer.o $(BUILD)Alligner.o $(BUILD)Downloader.o $(BUILD)Run.o $(BUILD)Operators.o $(BUILD)RNAread.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)Functions.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o
-	$(LINK) $(BUILD)main.o $(BUILD)ParameterHandler.o $(BUILD)Controller.o $(BUILD)ChromosomeInitializer.o $(BUILD)Alligner.o $(BUILD)Downloader.o $(BUILD)Run.o $(BUILD)Operators.o $(BUILD)RNAread.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)Functions.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o -o VARUS
+#------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+VARUS: $(BUILD)main.o $(BUILD)ParameterHandler.o $(BUILD)Controller.o $(BUILD)ChromosomeInitializer.o $(BUILD)Alligner.o $(BUILD)Downloader.o $(BUILD)Run.o $(BUILD)Operators.o $(BUILD)RNAread.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)Functions.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o $(BUILD)systemFunctions.o
+	$(LINK) $(BUILD)main.o $(BUILD)ParameterHandler.o $(BUILD)Controller.o $(BUILD)ChromosomeInitializer.o $(BUILD)Alligner.o $(BUILD)Downloader.o $(BUILD)Run.o $(BUILD)Operators.o $(BUILD)RNAread.o $(BUILD)myRandomEngine.o $(BUILD)Estimator.o $(BUILD)SimpleEstimator.o $(BUILD)Simulator.o $(BUILD)AdvancedEstimator.o $(BUILD)DirichletMixture.o $(BUILD)DirichletDistribution.o $(BUILD)Functions.o $(BUILD)ClusterEstimator.o $(BUILD)ClusterComponent.o $(BUILD)systemFunctions.o -o VARUS
 	
 $(BUILD)main.o: $(SRC)main.cpp headers/debug.h headers/TypeConventions.h headers/ParameterHandler.h headers/Warning.h headers/Alligner.h headers/Downloader.h headers/Run.h headers/Controller.h headers/ChromosomeInitializer.h headers/RNAread.h headers/myRandomEngine.h headers/Estimator.h headers/SimpleEstimator.h headers/Simulator.h headers/AdvancedEstimator.h headers/DirichletMixture.h headers/DirichletDistribution.h headers/Functions.h 
 	$(COMP) $(SRC)main.cpp -o $(BUILD)main.o;
@@ -71,7 +76,10 @@ $(BUILD)ChromosomeInitializer.o: $(SRC)ChromosomeInitializer.cpp headers/Chromos
 $(BUILD)Downloader.o: $(SRC)Downloader.cpp headers/Downloader.h headers/Run.h headers/ParameterHandler.h
 	$(COMP) $(SRC)Downloader.cpp -o $(BUILD)Downloader.o;
 	
-$(BUILD)Alligner.o: $(SRC)Alligner.cpp headers/Alligner.h headers/Run.h headers/ParameterHandler.h headers/RNAread.h
+$(BUILD)systemFunctions.o: $(SRC)systemFunctions.cpp
+	$(COMP) $(SRC)systemFunctions.cpp -o $(BUILD)systemFunctions.o
+	
+$(BUILD)Alligner.o: $(SRC)Alligner.cpp headers/Alligner.h headers/Run.h headers/ParameterHandler.h headers/RNAread.h headers/systemFunctions.h
 	$(COMP) $(SRC)Alligner.cpp -o $(BUILD)Alligner.o;
 	
 $(BUILD)RNAread.o: $(SRC)RNAread.cpp headers/RNAread.h

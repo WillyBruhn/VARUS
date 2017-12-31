@@ -20,14 +20,14 @@ bool has_suffix(const string& s, const string& suffix)
 }
 
 vector<string> filesWithExtInFolder(const string& path, const string &ext){
-
+	vector<string> files;
     DIR *dir = opendir(path.c_str());
     if(!dir)
     {
-//        DEBUG(0,"No files found with extension " << ext << " in folder " << path );
+        DEBUG(0,"No files found with extension " << ext << " in folder " << path );
+        return files;
     }
 
-    vector<string> files;
     dirent *entry;
     while((entry = readdir(dir))!=nullptr)
     {
@@ -40,5 +40,6 @@ vector<string> filesWithExtInFolder(const string& path, const string &ext){
 
     closedir(dir);
 
+    sort(files.begin(), files.end());
     return files;
 }

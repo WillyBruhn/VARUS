@@ -1,4 +1,4 @@
-#include "../../../../src/systemFunctions.cpp"
+#include "../../../../headers/systemFunctions.h"
 
 #include "../../../catch/catch.hpp"
 #include <iostream>
@@ -15,7 +15,7 @@ TEST_CASE( "filesWithExtInFolder", "" )
     }
 
     REQUIRE(files.size() == 3);
-    REQUIRE(files[0] == "/home/willy/BRAKER/VARUS/Implementation/Tests/Tests/unitTests/systemFunctions/fileExtensions/bla_3.fasta");
+    REQUIRE(files[0] == "/home/willy/BRAKER/VARUS/Implementation/Tests/Tests/unitTests/systemFunctions/fileExtensions/bla_1.fasta");
 
 }
 

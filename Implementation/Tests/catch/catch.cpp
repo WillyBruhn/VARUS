@@ -19,6 +19,7 @@
 //#include "../Tests/unitTests/src/test_myRandomEngine.cpp"
 #include "../Tests/unitTests/src/test_RunListRetriever.cpp"
 #include "../Tests/unitTests/src/test_systemFunctions.cpp"
+#include "../Tests/unitTests/src/test_Aligner.cpp"
 
 #include "headers/commandline.h"
 

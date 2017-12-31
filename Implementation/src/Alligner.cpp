@@ -6,10 +6,11 @@
  */
 
 #include "../headers/Alligner.h"
+//#include "../headers/Operators.h"
 #include "../headers/debug.h"
 #include "math.h"
 
-#include "systemFunctions.cpp"
+#include "../headers/systemFunctions.h"
 
 
 using namespace std;
@@ -47,13 +48,31 @@ std::string Alligner::shellCommand(Run *r) {
 	        }
 	        else
 	        {
-	        	std::string t = r->accesionId + "/" + "N" + n.str() + "X" + x.str() + "/";
+	        	std::string t = param->outFileNamePrefix + "/" + r->accesionId + "/" + "N" + n.str() + "X" + x.str() + "/";
 
 	        	vector<string> files = filesWithExtInFolder(t,".fasta");
 
 	        	string f = "";
-	        	for(unsigned int i = 0; i < files.size(); i++){
-	        		 f += files[i] + " ";
+//	        	for(unsigned int i = 0; i < files.size(); i++){
+//	        		 f += files[i] + " ";
+//	        	}
+
+	        	// we use only the first and the last file, because STAR can apparently only
+	        	// handle two files. For Pombe run SRR097898 the middle part is a technical barcode.
+	        	// So our best guess is to just take reads 1 and 3.
+	        	if(!files.empty()){
+	        		DEBUG(0,"Found " << files.size() << " Fasta-files!");
+					f = files[0];
+					if(files.size() > 1){
+						f += " " + files[files.size()-1];
+					}
+
+//		        	for(unsigned int i = 0; i < files.size(); i++){
+//		        		 f += files[i] + " ";
+//		        	}
+
+	        	}else {
+	        		DEBUG(0,"No fasta-files found!");
 	        	}
 
 				s =      param->pathToSTAR + "STAR "
@@ -64,7 +83,7 @@ std::string Alligner::shellCommand(Run *r) {
 
 				+ "--readFilesIn "
 				+ f
-				+ " --outFileNamePrefix " + param->outFileNamePrefix + t
+				+ " --outFileNamePrefix " + t
 //							+ " --outFilterScoreMinOverLread 0 --outFilterMatchNminOverLread 0 --outFilterMatchNmin 0"
 //	                        + " --outSAMtype BAM";
 				;
