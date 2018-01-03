@@ -140,17 +140,19 @@ void Controller::algorithm(){
 		DEBUG(1,"Done Loading all once");
 	}
 
+	updateDownloadableRuns();
+
 	while(continuing()){
 		batchCount++;
 
 		// if maxbatches < batchCount stop downloading
 		if(!continuing()) break;
 
-		if(param->ignoreReadNum != 1){
-			updateDownloadableRuns();
-		}
+
 		if(downloadableRuns.size() == 0){
 			DEBUG(0,"No downloadable Runs left. Exiting...");
+			exportCoverage();
+			finalMerge();
 			param->exit_text();
 		}
 
@@ -200,6 +202,10 @@ void Controller::algorithm(){
 		exportRunStatistics();
 
 		DEBUG(1,"...done Exporting")
+
+		if(param->ignoreReadNum != 1){
+			updateDownloadableRuns();
+		}
 
 		if(param->deleteLater == 1 && batchCount%param->mergeThreshold == 0){
 			mergeAlignments(goodBatchCount);
