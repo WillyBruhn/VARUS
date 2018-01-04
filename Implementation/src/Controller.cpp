@@ -149,12 +149,7 @@ void Controller::algorithm(){
 		if(!continuing()) break;
 
 
-		if(downloadableRuns.size() == 0){
-			DEBUG(0,"No downloadable Runs left. Exiting...");
-			exportCoverage();
-			finalMerge();
-			param->exit_text();
-		}
+
 
 		calculateProfit(downloadableRuns);
 
@@ -205,6 +200,13 @@ void Controller::algorithm(){
 
 		if(param->ignoreReadNum != 1){
 			updateDownloadableRuns();
+		}
+
+		if(downloadableRuns.size() == 0){
+			DEBUG(0,"No downloadable Runs left. Exiting...");
+			exportCoverage();
+			finalMerge();
+			param->exit_text();
 		}
 
 		if(param->deleteLater == 1 && batchCount%param->mergeThreshold == 0){
