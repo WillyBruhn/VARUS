@@ -24,7 +24,7 @@ make
 ## Downloading reads of Drosophila melanogaster from the NCBI:
 Find a working setup under /GettingStarted/Drosophila. You can use this for your applications by modifying **parametersCopy** 
 and species.txt and substituting ***drosophila.fasta*** with the needed genome-file. 
-Invoke to start downloading runs.
+Invoke the following command to start downloading runs.
 ```sh
 ./runVARUS.pl
 ```
