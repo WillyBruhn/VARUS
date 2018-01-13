@@ -36,7 +36,10 @@ The final output is a file called ***VARUS.bam***.
 
 ### VARUSparameters.txt
 Pay attention to the following parameters:
+
 **--pathToSTAR** must point to the executable of **STAR**.
+
 **--maxBatches** specifies how many runs you want to download at most.
+
 **--batchSize** specifies how many reads you want to download in each step.
 
