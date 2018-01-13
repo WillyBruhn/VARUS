@@ -25,7 +25,7 @@ Find a working setup under /GettingStarted/Pombe. You can use this for your appl
 and ***species.txt*** and substituting ***pombe.fasta*** with a corresponding genome-file. 
 Invoke the following command to start downloading runs.
 ```sh
-./runVARUS.pl
+../.././runVARUS.pl
 ```
 The final output is a file called ***VARUS.bam***.
 
