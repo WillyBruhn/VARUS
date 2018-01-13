@@ -64,7 +64,7 @@ do
 done
 
 echo "Creating final alignment by merging all bam-files: $bamFiles"
-    samtools merge -f -n "final.bam" $bamFiles
+    samtools merge -f -n "VARUS.bam" $bamFiles
 
 #--------------------------------------------------------------------
 # To clean up delete all subfolders.

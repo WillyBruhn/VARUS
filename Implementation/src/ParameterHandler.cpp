@@ -567,11 +567,11 @@ ParameterHandler::ParameterHandler() {
 
 	currentWorkingDirectory = get_working_path();
 
-	pathToParameters = currentWorkingDirectory + "/parametersCopy";
+	pathToParameters = currentWorkingDirectory + "/VARUSparameters.txt";
 		INITPARAM(pathToParameters,
 				parameterCategories[COMMANDLINE],
 				"specifies the path and name to the parameters-file that should be read in and written to. "
-				"Default is the current working directory and a file called 'parametersCopy'.");
+				"Default is the current working directory and a file called 'VARUSparameters.txt'.");
 
 	exportParametersToFile = 0;
 		INITPARAM(exportParametersToFile,

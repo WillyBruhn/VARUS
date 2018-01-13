@@ -77,7 +77,7 @@ my $usage =
     Parameter           default     Exlpanation
     --outFileDir:       /cwd/       Folder in which all ouput should be stored
 
-    --varusParameters:  /cwd/       path to a file called parametersCopy with all the parameters for VARUS
+    --varusParameters:  /cwd/       path to a file called VARUSparameters.txt with all the parameters for VARUS
 
     --createSTARindex:  1           creates the index, 0 if you don't want to create the index
                                     You need an index in order to run STAR
@@ -309,14 +309,14 @@ foreach my $latinName (keys %species){
     #--------------------------------------------------------------------
 
     if($runVARUS){
-        my $copyCommand = "cp ".$pathToSpecies."/parametersCopy ".$outFileDir."/".$folder."/parametersCopyCopy";
+        my $copyCommand = "cp ".$pathToSpecies."/VARUSparameters.txt ".$outFileDir."/".$folder."/VARUSparametersCopy.txt";
         system($copyCommand);
 
         Log(0, "Adjusting parameters for VARUS ...");
-        open(DAT,"$outFileDir/$folder/parametersCopyCopy") || 
-        die "Could not open file $outFileDir/$folder/parametersCopyCopy \n";
+        open(DAT,"$outFileDir/$folder/VARUSparametersCopy.txt") || 
+        die "Could not open file $outFileDir/$folder/VARUSparametersCopy.txt \n";
         
-        open(my $fh, '>', "$outFileDir/$folder/parametersCopy") or die "Could not open file '$$outFileDir/$folder/parametersCopy' $!";
+        open(my $fh, '>', "$outFileDir/$folder/VARUSparameters.txt") or die "Could not open file '$$outFileDir/$folder/VARUSparameters.txt' $!";
 
         while(<DAT>){
             my $newLine = $_;
@@ -331,7 +331,7 @@ foreach my $latinName (keys %species){
                     $newLine = "--outFileNamePrefix ".$outFileDir."/".$folder."/\n";
                 }
                 if($line[0] eq "--pathToParameters"){
-                    $newLine = "--pathToParameters ".$outFileDir."/".$folder."/parametersCopy\n";
+                    $newLine = "--pathToParameters ".$outFileDir."/".$folder."/VARUSparameters.txt\n";
                 }
                 if($line[0] eq "--pathToRuns"){
                     $newLine = "--pathToRuns ".$outFileDir."/".$folder."/\n";
