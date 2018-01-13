@@ -21,6 +21,11 @@ make
 ``` 
 
 # Getting Started
+## Requirements:
+Check that you have fastq-dump installed [https://ncbi.github.io/sra-tools/fastq-dump.html].  
+Check that you have STAR installed [https://github.com/alexdobin/STAR].  
+
+## Downloading Runs
 Find a working setup under /GettingStarted/Pombe. You can use this for your applications by modifying ***VARUSparameters.txt*** 
 and ***species.txt*** and substituting ***pombe.fasta*** with a corresponding genome-file. 
 Invoke the following command to start downloading runs.
@@ -29,8 +34,9 @@ Invoke the following command to start downloading runs.
 ```
 The final output is a file called ***VARUS.bam***.
 
+### VARUSparameters.txt
+Pay attention to the following parameters:
+**--pathToSTAR** must point to the executable of **STAR**.
+**--maxBatches** specifies how many runs you want to download at most.
+**--batchSize** specifies how many reads you want to download in each step.
 
-
-### Requirements:
-Check that you have fastq-dump installed [https://ncbi.github.io/sra-tools/fastq-dump.html].  
-Check that you have STAR installed [https://github.com/alexdobin/STAR].  
