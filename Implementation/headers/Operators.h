@@ -87,7 +87,7 @@ double euklidNorm(Map<U32,V> &m) {
 	for(const auto& p : m){
 		ret += p.second*p.second;
 	}
-	ret = pow(ret,0.5);
+	ret = sqrt(ret);
 	return ret;
 }
 
