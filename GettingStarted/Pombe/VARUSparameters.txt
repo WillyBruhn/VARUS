@@ -27,7 +27,7 @@
 --pathToVARUS ./Implementation/
 --profitCondition 0
 --pseudoCount 1
---qualityThreshold 50
+--qualityThreshold 5
 --randomSeed 1
 --readParametersFromFile 1
 --runThreadN 4
