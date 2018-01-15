@@ -72,6 +72,7 @@ my $latinGenus ="";
 my $speciesGenome ="";
 my $allRuns = 1;
 my $onlyPaired = 1;
+my $pathToSTAR = "../../STAR/bin/Linux_x86_64/";
 
 my $usage = 
 	"Usage:
@@ -79,6 +80,10 @@ my $usage =
     --outFileDir:       /cwd/       Folder in which all ouput should be stored
 
     --varusParameters:  /cwd/       path to a file called VARUSparameters.txt with all the parameters for VARUS
+
+    --pathToSTAR: 		../../STAR/bin/Linux_x86_64/ 
+									
+									specifies the path to the STAR executable
 
     --createSTARindex:  1           creates the index, 0 if you don't want to create the index
                                     You need an index in order to run STAR
@@ -125,6 +130,7 @@ GetOptions('pathToSpecies=s'=>\$pathToSpecies,
            'createStatistics!'=>\$createStatistics,
            'displayRunListOutput!'=>\$displayRunListOutput,
            'displaySTARIndexerOutput!'=>\$displaySTARIndexerOutput,
+		   'pathToSTAR=s'=>\$pathToSTAR,
 		   'help!'=>\$help)
 or die($usage);
 
@@ -283,7 +289,7 @@ foreach my $latinName (keys %species){
         my $genomeCur = $outFileDir."/".$folder."/genome";
         mkdir($genomeCur, 0700) unless(-d $genomeCur );
 
-        my $genomeGenerateCmd = "STAR --runThreadN 4 --runMode genomeGenerate --genomeDir ".$genomeCur." --genomeFastaFiles ".$outFileDir."/".$species{$latinName};
+        my $genomeGenerateCmd = "$pathToSTAR./STAR --runThreadN 4 --runMode genomeGenerate --genomeDir ".$genomeCur." --genomeFastaFiles ".$outFileDir."/".$species{$latinName};
 
         Log(0,"Invoking STAR-indexer call: ".$genomeGenerateCmd);
 
