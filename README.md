@@ -24,6 +24,10 @@ make
 ## Requirements:
 Check that you have fastq-dump installed [https://ncbi.github.io/sra-tools/fastq-dump.html].  
 Check that you have STAR installed [https://github.com/alexdobin/STAR].  
+You can install both tools by running the install.sh script:
+```sh
+./install.sh
+```
 
 ## Downloading Runs
 Find a working setup under /GettingStarted/Pombe. You can use this for your applications by modifying ***VARUSparameters.txt*** 

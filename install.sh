@@ -17,8 +17,10 @@ AAGTAGGTCTCGTCTGTGTTTTCTACGAGCTTGTGTTCCAGCTGACCCACTCCCTGGGTGGGGGGACTGGGT
 +SRR390728.2 2 length=72
 ;;;;;;;;;;;;;;;;;4;;;;3;393.1+4&&5&&;;;;;;;;;;;;;;;;;;;;;<9;<;;;;;464262"
 
+fastqDumpFlag=0
 if [ "$is" == "$should" ]; then
 	echo "...fastq-dump was poperly installed"
+	fastqDumpFlag=1
 else 
 	echo "...fastq-dump was not properly installed. Check that you have stable internet."
 fi
@@ -49,10 +51,36 @@ For more details see:
 
 isSTAR=$(STAR/bin/Linux_x86_64/./STAR)
 
+STARFlag=0
 if [[ $isSTAR == *"$shouldSTAR" ]]; then
 	echo "...STAR was properly installed."
+	STARFlag=1
 else 
 	echo "...STAR was probably not properly installed."
 fi
+
+
+echo "compiling VARUS..."
+# change to the source
+cd VARUS/Implementation
+
+# build VARUS
+make
+
+cd ..
+cd ..
+
+if [[ $fastqDumpFlag == 1 ]]; then
+	echo "succesfully installed fastq-dump"
+else 
+	echo "installation of fastq-dump failed"
+fi
+
+if [[ $STARFlag == 1 ]]; then
+	echo "succesfully installed STAR"
+else 
+	echo "installation of STAR failed"
+fi
+
 
 #export PERL5LIB=/home/willy/BRAKER/VARUS/Packages/eval-2.2.8/
