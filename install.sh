@@ -62,12 +62,10 @@ fi
 
 echo "compiling VARUS..."
 # change to the source
-cd VARUS/Implementation
+cd Implementation
 
 # build VARUS
 make
-
-cd ..
 cd ..
 
 if [[ $fastqDumpFlag == 1 ]]; then
