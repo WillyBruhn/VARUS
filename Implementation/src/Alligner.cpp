@@ -106,7 +106,7 @@ void Alligner::mapReads(Run *r)
         if(0 != status)
         {
             DEBUG(0,"Failed to run STAR properly!");
-            DEBUG(0,"Calling from " << system("pwd"))
+//            DEBUG(0,"Calling from " << system("pwd"))
         }
 }
 

@@ -80,7 +80,7 @@ bool Downloader::getBatch(Run *r, bool all)
     if(0 != status)
     {
         DEBUG(0,"Failed to save batch :"  << r->accesionId << " -N  " << r->N << " -X " << r->X);
-        DEBUG(0,"Calling from " << system("pwd"))
+//        DEBUG(0,"Calling from " << system("pwd > cur.txt"))
 //        writeBadRunSection(outFileNamePrefix);
 
 //        exit(0);

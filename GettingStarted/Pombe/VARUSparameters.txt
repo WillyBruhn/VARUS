@@ -8,7 +8,7 @@
 --exportNewtons 0
 --exportObservationsToFile 1
 --exportParametersToFile 1
---fastqDumpCall ../../sratoolkit.2.8.2-1-ubuntu64/bin/./fastq-dump
+--fastqDumpCall ../../../sratoolkit.2.8.2-1-ubuntu64/bin/./fastq-dump
 --genomeDir ./genome/
 --ignoreReadNum 0
 --lambda 600
@@ -23,7 +23,7 @@
 --pathToDice --pathToParameters
 --pathToParameters ./VARUSparameters.txt
 --pathToRuns ./
---pathToSTAR ../../STAR/bin/Linux_x86_64/
+--pathToSTAR ../../../STAR/bin/Linux_x86_64/
 --pathToVARUS ./Implementation/
 --profitCondition 0
 --pseudoCount 1
