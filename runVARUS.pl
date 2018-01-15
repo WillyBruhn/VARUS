@@ -71,6 +71,7 @@ my $latinSpecies ="";
 my $latinGenus ="";
 my $speciesGenome ="";
 my $allRuns = 1;
+my $onlyPaired = 1;
 
 my $usage = 
 	"Usage:
@@ -86,6 +87,8 @@ my $usage =
                                     You need a RunList in order to run VARUS
 
         --allRuns       1           put all available accession-ids in the Runlist.txt, if false only the first 100 are used
+
+		--onlyPaired	1			use only paired-end reads
 
     --runVARUS          1           runs VARUS
 
@@ -113,6 +116,7 @@ GetOptions('pathToSpecies=s'=>\$pathToSpecies,
            'createSTARindex!'=>\$createSTARindex,
            'createRunList!'=>\$createRunList,
            'allRuns!'=>\$allRuns,
+           'onlyPaired!'=>\$onlyPaired,
 		   'readFromTable!'=>\$readFromTable,
 		   'latinGenus=s'=>\$latinGenus,
            'latinSpecies=s'=>\$latinSpecies,
@@ -176,6 +180,7 @@ Log(0, "Started runVarus.pl with the following parameters:\n
                     varusParameters: $varusParameters
                     createSTARindex: $createSTARindex
                     createRunList: $createRunList
+					onlyPaired: $onlyPaired
                     logFileName: $logFileName
                     verbosity: $verbosity
                     displayRunListOutput: $displayRunListOutput
