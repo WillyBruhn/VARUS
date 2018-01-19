@@ -15,21 +15,25 @@ Invoke the following command from the command-line in order to clone the reposit
 git clone https://github.com/WillyBruhn/VARUS.git
 ```
 
-VARUS incorporates the tools fastq-dump [https://ncbi.github.io/sra-tools/fastq-dump.html] and STAR [https://github.com/alexdobin/STAR]. You can install both tools by invoking:
-
+**VARUS** incorporates the tools 
+fastq-dump [https://ncbi.github.io/sra-tools/fastq-dump.html] 
+and 
+STAR [https://github.com/alexdobin/STAR]. 
+You can install both tools by invoking:
 ```sh
 VARUS/./install.sh
 ``` 
 
 # Getting Started
 ## Downloading Runs
-Find a working setup under /GettingStarted/Pombe. You can use this for your applications by modifying ***VARUSparameters.txt*** 
-and ***species.txt*** and substituting ***pombe.fasta*** with a corresponding genome-file. 
-Change to the Folder /GettingStarted/Pombe/ and invoke the following command to start downloading runs.
+Find a working setup under /GettingStarted/Pombe. Change to this folder and invoke the following command to start downloading runs:
 ```sh
 ../.././runVARUS.pl
 ```
 The final output is a file called ***VARUS.bam***.
+
+You can use this for your applications by modifying ***VARUSparameters.txt*** 
+and ***species.txt*** and substituting ***pombe.fasta*** with a corresponding genome-file. 
 
 ### VARUSparameters.txt
 Pay attention to the following parameters:
