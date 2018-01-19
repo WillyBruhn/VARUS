@@ -8,27 +8,17 @@
 
 The key here is that runs are only downloaded partially in each iteration. With these read-samples, estimations of the runs value for further downloads from this run are made. This allows **VARUS** to distinguish good runs from bad runs within the first few downloads, and download more extensively from runs that are likely to contain more reads from yet underrepresented transcripts.
 
+VARUS makes use of the tools fastq-dump [https://ncbi.github.io/sra-tools/fastq-dump.html] and STAR [https://github.com/alexdobin/STAR].
+
 # INSTALLATION
 ## LINUX
 ```sh
 git clone https://github.com/WillyBruhn/VARUS.git
 
-# change to the source
-cd VARUS/Implementation
+VARUS/./install.sh
 
-# build VARUS
-make
 ``` 
-
 # Getting Started
-## Requirements:
-Check that you have fastq-dump installed [https://ncbi.github.io/sra-tools/fastq-dump.html].  
-Check that you have STAR installed [https://github.com/alexdobin/STAR].  
-You can install both tools by running the install.sh script:
-```sh
-./install.sh
-```
-
 ## Downloading Runs
 Find a working setup under /GettingStarted/Pombe. You can use this for your applications by modifying ***VARUSparameters.txt*** 
 and ***species.txt*** and substituting ***pombe.fasta*** with a corresponding genome-file. 
