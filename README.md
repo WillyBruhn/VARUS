@@ -44,3 +44,7 @@ Pay attention to the following parameters:
 
 **--batchSize** specifies how many reads you want to download in each step.
 
+
+# VARUS at PAG2018
+![alternate text](poster.png)
+
