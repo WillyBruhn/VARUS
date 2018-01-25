@@ -10,33 +10,30 @@ The key here is that runs are only downloaded partially in each iteration. With 
 
 # INSTALLATION
 ## LINUX
+Invoke the following command from the command-line in order to clone the repository: 
 ```sh
 git clone https://github.com/WillyBruhn/VARUS.git
+```
 
-# change to the source
-cd VARUS/Implementation
-
-# build VARUS
-make
+**VARUS** incorporates the tools 
+fastq-dump [https://ncbi.github.io/sra-tools/fastq-dump.html] 
+and 
+STAR [https://github.com/alexdobin/STAR]. 
+You can install both tools by invoking:
+```sh
+VARUS/./install.sh
 ``` 
 
 # Getting Started
-## Requirements:
-Check that you have fastq-dump installed [https://ncbi.github.io/sra-tools/fastq-dump.html].  
-Check that you have STAR installed [https://github.com/alexdobin/STAR].  
-You can install both tools by running the install.sh script:
-```sh
-./install.sh
-```
-
 ## Downloading Runs
-Find a working setup under /GettingStarted/Pombe. You can use this for your applications by modifying ***VARUSparameters.txt*** 
-and ***species.txt*** and substituting ***pombe.fasta*** with a corresponding genome-file. 
-Invoke the following command to start downloading runs.
+Find a working setup under /GettingStarted/Pombe. Change to this folder and invoke the following command to start downloading runs:
 ```sh
 ../.././runVARUS.pl
 ```
 The final output is a file called ***VARUS.bam***.
+
+You can use this for your applications by modifying ***VARUSparameters.txt*** 
+and ***species.txt*** and substituting ***pombe.fasta*** with a corresponding genome-file. 
 
 ### VARUSparameters.txt
 Pay attention to the following parameters:
@@ -46,4 +43,8 @@ Pay attention to the following parameters:
 **--maxBatches** specifies how many runs you want to download at most.
 
 **--batchSize** specifies how many reads you want to download in each step.
+
+
+# VARUS at PAG2018
+![alternate text](poster.png)
 
