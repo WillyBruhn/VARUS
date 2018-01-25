@@ -62,7 +62,7 @@ fi
 
 echo "compiling VARUS..."
 # change to the source
-cd Implementation
+cd VARUS/Implementation
 
 # build VARUS
 make
