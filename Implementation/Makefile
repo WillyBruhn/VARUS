@@ -47,7 +47,7 @@ $(Test)catch.o: $(Test)catch.cpp $(Test)catch.hpp $(TestSources)test_myRandomEng
 #	$(COMP) $(Test)catch.cpp -o $(Test)catch.o;
 
 clean:
-	rm -f $(BUILD)*.o VARUS VARUSTest $(Test)CatchTest rm -f $(Test)*.o
+	rm -f $(BUILD)*.o VARUS VARUSTest VARUSgprof $(Test)CatchTest rm -f $(Test)*.o
 
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
