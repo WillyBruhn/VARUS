@@ -23,7 +23,7 @@ You can install both tools and compile VARUS by invoking:
 ```sh
 VARUS/./install.sh
 ``` 
-If you choose to install fastq-dump and STAR manually don't forget to also compile VARUS manually by invoking:
+If you choose to install fastq-dump and STAR manually don't forget to also compile **VARUS** manually by invoking:
 ```sh
 cd Implementation
 
