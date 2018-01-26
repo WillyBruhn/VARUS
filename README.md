@@ -52,5 +52,8 @@ Pay attention to the following parameters:
 
 
 # VARUS at PAG2018
-![alternate text](poster.png)
+![alternate text](docs/poster.png)
+
+# Bachelor Thesis
+Find the bachelor thesis corresponding to **VARUS** in /docs/Thesis.
 
