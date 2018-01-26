@@ -19,9 +19,15 @@ git clone https://github.com/WillyBruhn/VARUS.git
 fastq-dump [https://ncbi.github.io/sra-tools/fastq-dump.html] 
 and 
 STAR [https://github.com/alexdobin/STAR]. 
-You can install both tools by invoking:
+You can install both tools and compile VARUS by invoking:
 ```sh
 VARUS/./install.sh
+``` 
+If you choose to install fastq-dump and STAR manually don't forget to also compile VARUS manually by invoking:
+```sh
+cd Implementation
+
+make
 ``` 
 
 # Getting Started
