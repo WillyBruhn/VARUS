@@ -37,6 +37,8 @@ public:
 
 	void kMeans(std::vector<Run*> &runs);
 
+	void estimatePWithNoObs(std::vector<Run*> &runs, unsigned int iterationNumber);
+
 	void estimateP(std::vector<Run*> &runs, unsigned int iterationNumber);
 
 	double distance(Run *r, ClusterComponent &c);

@@ -679,3 +679,7 @@ void DirichletMixture::calculateSimpleP(){
 		components[i].calculateSimpleP();
 	}
 }
+
+void DirichletMixture::estimatePWithNoObs(std::vector<Run*> &runs, unsigned int iterationNumber){
+
+}

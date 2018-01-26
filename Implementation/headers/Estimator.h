@@ -24,6 +24,7 @@ public:
 	Estimator(ParameterHandler *p);
 	virtual ~Estimator();
 
+	virtual void estimatePWithNoObs(std::vector<Run*> &runs, unsigned int iterationNumber) = 0;
 	virtual void estimateP(std::vector<Run*> &runs, unsigned int iterationNumber) = 0;
 //	virtual void initializeP(std::vector<Experiment*> &experiments) = 0;
 

@@ -12,6 +12,7 @@ public:
 	virtual ~SimpleEstimator();
 
 	void estimateP(std::vector<Run*> &runs, unsigned int IterationNumber);
+	void estimatePWithNoObs(std::vector<Run*> &runs, unsigned int iterationNumber);
 };
 
 #endif /* SIMPLEESTIMATOR_H_ */

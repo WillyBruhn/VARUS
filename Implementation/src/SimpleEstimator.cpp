@@ -50,3 +50,7 @@ void SimpleEstimator::estimateP(std::vector<Run*> &runs, unsigned int IterationN
 //		experiments[k]->setPNoObs(pseudoCount/totalCount);
 	}
 }
+
+void SimpleEstimator::estimatePWithNoObs(std::vector<Run*> &runs, unsigned int iterationNumber){
+
+}

@@ -226,6 +226,9 @@ void ClusterEstimator::calculatePnoObs(std::vector<Run*> &runs){
 
 }
 
+void ClusterEstimator::estimatePWithNoObs(std::vector<Run*> &runs, unsigned int iterationNumber){
+
+}
 
 
 

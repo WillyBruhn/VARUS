@@ -65,6 +65,24 @@ void AdvancedEstimator::estimateP(std::vector<Run*> &runs, unsigned int iteratio
 //			DEBUG(3,"p_total[j->first] " << p_total[j->first]);
 	}
 
+	UDmap pnoObs;
+	// Make estimation for runs with 0 reads only once
+	{
+		double normalizingConst = 	+ (double)param->pseudoCount*param->numOfBlocks
+									+ param->lambda*param->numOfBlocks;
+
+		UDmap::iterator j;
+		// runs[k]->p.size() will be equal to totalObs.size() afterwards even though
+		// runs[k]->getObservationsSize may be smaller
+		for(j=p_total.begin(); j!=p_total.end(); j++) {
+			// p_j = c_j + a/(c*+1) + lambda*p_total
+			pnoObs[j->first] =
+					((double)param->pseudoCount
+					+ param->lambda*p_total[j->first]*param->numOfBlocks)
+					/normalizingConst;
+		}
+	}
+
 	double psum = 0.0;
 	bool faultyCount = 0;
 	for(unsigned int k = 0; k < runs.size(); k++) {
@@ -73,43 +91,48 @@ void AdvancedEstimator::estimateP(std::vector<Run*> &runs, unsigned int iteratio
 //								+ (double)param->pseudoCount*param->numOfBlocks
 //								+ param->lambda*param->numOfBlocks;								// pre 7.12.17
 
-		double normalizingConst = runs[k]->timesDownloaded*param->batchSize
-								+ (double)param->pseudoCount*param->numOfBlocks
-								+ param->lambda*param->numOfBlocks;								// after 7.12.17
+		if(runs[k]->timesDownloaded == 0){
+			runs[k]->p = pnoObs;
+		} else {
 
-//		DEBUG(1,normalizingConst);
-		UDmap::iterator j;
-		// runs[k]->p.size() will be equal to totalObs.size() afterwards even though
-		// runs[k]->getObservationsSize may be smaller
-		for(j=p_total.begin(); j!=p_total.end(); j++) {
-			// p_j = c_j + a/(c*+1) + lambda*p_total
-			runs[k]->p[j->first] =
-					(runs[k]->observations[j->first]
-					+ (double)param->pseudoCount
-					+ param->lambda*p_total[j->first]*param->numOfBlocks)
-					/normalizingConst;
-			psum += runs[k]->p[j->first];
+			double normalizingConst = runs[k]->timesDownloaded*param->batchSize
+									+ (double)param->pseudoCount*param->numOfBlocks
+									+ param->lambda*param->numOfBlocks;								// after 7.12.17
+
+	//		DEBUG(1,normalizingConst);
+			UDmap::iterator j;
+			// runs[k]->p.size() will be equal to totalObs.size() afterwards even though
+			// runs[k]->getObservationsSize may be smaller
+			for(j=p_total.begin(); j!=p_total.end(); j++) {
+				// p_j = c_j + a/(c*+1) + lambda*p_total
+				runs[k]->p[j->first] =
+						(runs[k]->observations[j->first]
+						+ (double)param->pseudoCount
+						+ param->lambda*p_total[j->first]*param->numOfBlocks)
+						/normalizingConst;
+				psum += runs[k]->p[j->first];
+			}
+
+			// pNoObs = a/ c^k* + Ta + lambda
+	//		runs[k]->setPNoObs(basePseudoCount/
+	//										(runs[k]->getObservationSum()
+	//										+ runs[k]->getSize()*basePseudoCount
+	//										+ lambda*sum(p_total)));
+	//		psum += runs[k]->getPNoObs()*(runs[k]->getSize() - runs[k]->getPSize());
+	//		DEBUG(1, psum);
+	//		assert(fabs(1.0 - psum) <= precision);
+
+
+
+	//		if(fabs(1.0 - psum) > precision) {
+	////			DEBUG((fabs(1.0 - psum) << " > " << precision);
+	//			faultyCount++;
+	//		}
+			psum = 0.0;
 		}
 
-		// pNoObs = a/ c^k* + Ta + lambda
-//		runs[k]->setPNoObs(basePseudoCount/
-//										(runs[k]->getObservationSum()
-//										+ runs[k]->getSize()*basePseudoCount
-//										+ lambda*sum(p_total)));
-//		psum += runs[k]->getPNoObs()*(runs[k]->getSize() - runs[k]->getPSize());
-//		DEBUG(1, psum);
-//		assert(fabs(1.0 - psum) <= precision);
-
-
-
-//		if(fabs(1.0 - psum) > precision) {
-////			DEBUG((fabs(1.0 - psum) << " > " << precision);
-//			faultyCount++;
-//		}
-		psum = 0.0;
+		DEBUG(0,"p_total sums to " << sum(p_total));
 	}
-
-	DEBUG(0,"p_total sums to " << sum(p_total));
 
 //	if(faultyCount != 0) {
 //		DEBUG(0,"WARNING: " << faultyCount << " runs probably have wrong estimations! P does not sum to 1!");
@@ -122,3 +145,7 @@ void AdvancedEstimator::estimateP(std::vector<Run*> &runs, unsigned int iteratio
 //		runs[k]->setAllPValues(1.0/(double)runs[k]->getSize());
 //	}
 //}
+
+void AdvancedEstimator::estimatePWithNoObs(std::vector<Run*> &runs, unsigned int iterationNumber){
+
+}

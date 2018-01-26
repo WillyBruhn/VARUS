@@ -61,6 +61,8 @@ public:
 	void calculateLikelihoods(Run* r, std::vector<double> &likelihoods);
 	bool checkComponentsValid();
 
+
+	void estimatePWithNoObs(std::vector<Run*> &runs, unsigned int iterationNumber);
 	void estimateP(std::vector<Run*> &runs, const unsigned int IterationNumber);
 	void initializeP(std::vector<Run*> &runs);
 	void calculateP(std::vector<Run*> &runs);

@@ -22,6 +22,7 @@ public:
 	AdvancedEstimator(ParameterHandler *p);
 	virtual ~AdvancedEstimator();
 
+	void estimatePWithNoObs(std::vector<Run*> &runs, unsigned int iterationNumber);
 	void estimateP(std::vector<Run*> &runs, unsigned int iterationNumber);
 //	void initializeP(std::vector<Experiment*> &experiments);
 };
