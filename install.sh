@@ -1,10 +1,15 @@
 #!/bin/bash
+# Willy Bruhn Jan 2018
+# Script for installing fastq-dump, STAR and compiling VARUS
 
+cwd=$(pwd)
+echo "installing to $cwd"
 echo "installing both fastq-dump and STAR. This might take some time ..."
 echo "installing fastq-dump..."
 wget --output-document sratoolkit.tar.gz http://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-ubuntu64.tar.gz
 
 tar -vxzf sratoolkit.tar.gz
+
 
 is=$(sratoolkit.2.8.2-1-ubuntu64/bin/./fastq-dump --stdout SRR390728 | head -n 8)
 
@@ -16,6 +21,7 @@ CATTCTTCACGTAGTTCTCGAGCCTTGGTTTTCAGCGATGGAGAATGACTTTGACAAGCTGAGAGAAGNTNC
 AAGTAGGTCTCGTCTGTGTTTTCTACGAGCTTGTGTTCCAGCTGACCCACTCCCTGGGTGGGGGGACTGGGT
 +SRR390728.2 2 length=72
 ;;;;;;;;;;;;;;;;;4;;;;3;393.1+4&&5&&;;;;;;;;;;;;;;;;;;;;;<9;<;;;;;464262"
+
 
 fastqDumpFlag=0
 if [ "$is" == "$should" ]; then
@@ -33,8 +39,6 @@ cd STAR/source
 
 # Build STAR
 make STAR
-cd ..
-cd ..
 
 shouldSTAR="### 2-pass Mapping
 twopassMode                 None
@@ -62,11 +66,11 @@ fi
 
 echo "compiling VARUS..."
 # change to the source
-cd VARUS/Implementation
+cd $cwd/Implementation
 
 # build VARUS
 make
-cd ..
+cd $cwd
 
 if [[ $fastqDumpFlag == 1 ]]; then
 	echo "succesfully installed fastq-dump"
