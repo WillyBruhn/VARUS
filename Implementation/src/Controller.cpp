@@ -348,9 +348,20 @@ void Controller::calculateProfit(vector<Run*> &runs){
 	/*! \brief Calculates the expected profit for all runs.
 	 */
 
+	// calculate profit for runs with no reads only once
+	double noReadsProfit = 0.0;
+	bool flagNoReadsProfit = false;
 
 	for(unsigned int i = 0; i < runs.size(); i++){
-		profit(runs[i]);
+		if(runs[i]->timesDownloaded == 0 && flagNoReadsProfit == true){
+			runs[i]->expectedProfit = noReadsProfit;
+		} else {
+			profit(runs[i]);
+			if(runs[i]->timesDownloaded == 0){
+				noReadsProfit = runs[i]->expectedProfit;
+				flagNoReadsProfit = true;
+			}
+		}
 	}
 }
 
