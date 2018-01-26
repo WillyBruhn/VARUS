@@ -131,7 +131,7 @@ void AdvancedEstimator::estimateP(std::vector<Run*> &runs, unsigned int iteratio
 			psum = 0.0;
 		}
 
-		DEBUG(0,"p_total sums to " << sum(p_total));
+		DEBUG(2,"p_total sums to " << sum(p_total));
 	}
 
 //	if(faultyCount != 0) {
