@@ -70,7 +70,6 @@ do
     bamFiles="$bamFiles $s"
 done
 
-<<<<<<< HEAD
 echo "removing old files"
 rm final*
 

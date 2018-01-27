@@ -1,6 +1,6 @@
 #!/bin/bash
 # Willy Bruhn Jan 2018
-# Script for installing fastq-dump, STAR and compiling VARUS
+# Script for installing fastq-dump, STAR and compiling VARUS and configuring GettingStarted/Pombe/VARUSparameters.txt
 
 cwd=$(pwd)
 echo "installing to $cwd"
@@ -71,6 +71,13 @@ cd $cwd/Implementation
 # build VARUS
 make
 cd $cwd
+
+# configure GettingStarted
+echo "configuring GettingSarted/VARUSpatameters.txt..."
+sed -i '/--pathToSTAR/c\--pathToSTAR $cwd/STAR/bin/Linux_x86_64/' $cwd/GettingStarted/Pombe/VARUSparameters.txt
+sed -i '/--pathToVARUS/c\--pathToVARUS $cwd/Implementation/' $cwd/GettingStarted/Pombe/VARUSparameters.txt
+sed -i '/--fastqDumpCall/c\--fastqDumpCall $cwd/sratoolkit.2.8.2-1-ubuntu64/bin/./fastq-dump' $cwd/GettingStarted/Pombe/VARUSparameters.txt
+
 
 if [[ $fastqDumpFlag == 1 ]]; then
 	echo "succesfully installed fastq-dump"

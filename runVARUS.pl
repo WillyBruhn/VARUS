@@ -74,6 +74,8 @@ my $allRuns = 1;
 my $onlyPaired = 1;
 my $pathToSTAR = "../../STAR/bin/Linux_x86_64/";
 
+my $VARUScall = "./VARUS";
+
 my $usage = 
 	"Usage:
     Parameter           default     Exlpanation
@@ -109,6 +111,8 @@ my $usage =
     --latinSpecies:                 latin name of the species e.g melanogaster
 
     --speciesGenome:                path to the corresponding genome in fasta-format
+    
+    --VARUScall:					default ./VARUS
 ";
 
 
@@ -131,6 +135,7 @@ GetOptions('pathToSpecies=s'=>\$pathToSpecies,
            'displayRunListOutput!'=>\$displayRunListOutput,
            'displaySTARIndexerOutput!'=>\$displaySTARIndexerOutput,
 		   'pathToSTAR=s'=>\$pathToSTAR,
+		   'VARUScall=s'=>\$VARUScall,
 		   'help!'=>\$help)
 or die($usage);
 
@@ -361,7 +366,7 @@ foreach my $latinName (keys %species){
         #--------------------------------------------------------------------
         # Call VARUS and download until VARUS decides to abort
         #--------------------------------------------------------------------
-        my $VARUSCall = "$pathToVARUS/Implementation/./VARUS | tee -a $outFileDir/$logFileName";
+        my $VARUSCall = "$pathToVARUS/Implementation/$VARUScall | tee -a $outFileDir/$logFileName";
 
 
         Log(0, "Running VARUS for $latinName ...");

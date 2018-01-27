@@ -23,12 +23,13 @@ Estimator::~Estimator() {
 
 void Estimator::initializeRuns(std::vector<Run*> &runs, UUmap &transcriptUnits){
 	DEBUG(1,"Initializing Runs");
-	UUmap::iterator j;
-	for(unsigned int i = 0; i < runs.size(); i++){
-		for(j = transcriptUnits.begin(); j != transcriptUnits.end(); j++){
-			runs[i]->observations[j->first] = 0;
-			runs[i]->p[j->first] = 1.0/(double)transcriptUnits.size();
-		}
-	}
+	// this is actually not necessary
+//	UUmap::iterator j;
+//	for(unsigned int i = 0; i < runs.size(); i++){
+//		for(j = transcriptUnits.begin(); j != transcriptUnits.end(); j++){
+//			runs[i]->observations[j->first] = 0;
+//			runs[i]->p[j->first] = 1.0/(double)transcriptUnits.size();
+//		}
+//	}
 	DEBUG(1,"Done Initializing Runs");
 }
