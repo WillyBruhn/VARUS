@@ -53,6 +53,8 @@ For more details see:
 <https://github.com/alexdobin/STAR>
 <https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf>"
 
+
+cd $cwd
 isSTAR=$(STAR/bin/Linux_x86_64/./STAR)
 
 STARFlag=0
@@ -76,13 +78,13 @@ cd $cwd
 echo "configuring GettingSarted/VARUSpatameters.txt..."
 star='/--pathToSTAR/c\--pathToSTAR $cwd/STAR/bin/Linux_x86_64/'
 #sed -i '/--pathToSTAR/c\--pathToSTAR $cwd/STAR/bin/Linux_x86_64/' $cwd/GettingStarted/Pombe/VARUSparameters.txt
-sed -i $star $cwd/GettingStarted/Pombe/VARUSparameters.txt
+sed -i "$star" $cwd/GettingStarted/Pombe/VARUSparameters.txt
 
 varus='/--pathToVARUS/c\--pathToVARUS $cwd/Implementation/'
-sed -i $varus $cwd/GettingStarted/Pombe/VARUSparameters.txt
+sed -i "$varus" $cwd/GettingStarted/Pombe/VARUSparameters.txt
 
 fastqDump='/--fastqDumpCall/c\--fastqDumpCall $cwd/sratoolkit.2.8.2-1-ubuntu64/bin/./fastq-dump'
-sed -i $fastqDump $cwd/GettingStarted/Pombe/VARUSparameters.txt
+sed -i "$fastqDump" $cwd/GettingStarted/Pombe/VARUSparameters.txt
 
 
 if [[ $fastqDumpFlag == 1 ]]; then
