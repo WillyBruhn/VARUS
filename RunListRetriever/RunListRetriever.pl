@@ -43,6 +43,9 @@ my $outFileDir = "";
 my $help = 0;
 my $onlyPaired = 0;
 
+my $IDFile;
+my $WEBENV;
+
 my $outfiles = 0; # if true, output the files with the list in addition to the stats
 GetOptions('genus=s'=>\$species_name_GENUS,
 		   'species=s'=>\$species_name_SPECIES,
@@ -60,54 +63,49 @@ if ($help) {
     exit 0;
 }
 
+# -----------------------------------------------------
+# subroutines
+# -----------------------------------------------------
 
-# RETRIEVE ID
-#_______________________________________
-
-
-my $URL = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=sra&term=
-$species_name_GENUS+$species_name_SPECIES%5borgn%5d+AND+biomol_rna%5bProp%5d&usehistory=y";
-
-my $IDFile = "IDFile.xml";
-my $listFile = "list$retstart-$retmax.html";
-
-my $stat = system "wget -O $outFileDir$IDFile \"$URL\"";
-my $phrase =  "wget -O $outFileDir$IDFile \"$URL\"";
-
-if($stat != 0){
-    print "Check that you have a stable internet connection. Exiting...\n";
-    exit 1;
-}
-
-my $file = "";
-my $WEBENV;
-open(FILE, "<", "$outFileDir$IDFile") or die("Could not open file $outFileDir$IDFile");
-while (<FILE>)
-{
-#	print "$_";
-    $file = $file.$_;
-	if($_ =~ /\<WebEnv\>(.*)\<\/WebEnv\>/)
-	{
-		$WEBENV = $1;
+sub retrieveID{
+	my ($IDFile) = @_;
+	
+	my $URL = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=sra&term=
+	$species_name_GENUS+$species_name_SPECIES%5borgn%5d+AND+biomol_rna%5bProp%5d&usehistory=y";
+	
+	my $stat = system "wget -O $outFileDir$IDFile \"$URL\"";
+	my $phrase =  "wget -O $outFileDir$IDFile \"$URL\"";
+	
+	if($stat != 0){
+	    print "Check that you have a stable internet connection. Exiting...\n";
+	    exit 1;
 	}
+	
+	my $file = "";
+	my $WEBENV;
+	open(FILE, "<", "$outFileDir$IDFile") or die("Could not open file $outFileDir$IDFile");
+	while (<FILE>)
+	{
+	#	print "$_";
+	    $file = $file.$_;
+		if($_ =~ /\<WebEnv\>(.*)\<\/WebEnv\>/)
+		{
+			$WEBENV = $1;
+		}
+	}
+	close (FILE);
+	
+	#print "$WEBENV\n";
+	
+	if (index($file, "<PhraseNotFound>") != -1) {
+	    print "Phrase not Found. Check that your genus and species are correct. Exiting RunListRetriever...\n";
+	    cleanUp();
+	    exit 1;    
+	#die("Phrase not Found. Check that your genus and species are correct. Exiting RunListRetriever...\n");
+	}
+	
+	return $WEBENV;
 }
-close (FILE);
-
-#print "$WEBENV\n";
-
-if (index($file, "<PhraseNotFound>") != -1) {
-    print "Phrase not Found. Check that your genus and species are correct. Exiting RunListRetriever...\n";
-    cleanUp();
-    exit 1;    
-#die("Phrase not Found. Check that your genus and species are correct. Exiting RunListRetriever...\n");
-} 
-
-
-
-
-# RETRIEVE LIST OF RUNS
-#__________________________________________
-
 
 sub getRuns
 {
@@ -128,6 +126,14 @@ sub getRuns
 	open(FILE, "<", "$outFileDir$listFile") or die("Could not open file $outFileDir$listFile");
 	while (<FILE>)
 	{
+		$paired = 0;
+		# check if it's a run with paired reads
+#		if($_ =~ /(PAIRED NOMINAL_LENGTH)/)
+        if($_ =~ /PAIRED/)
+		{
+			$paired = 1;
+		}
+		
 		# build run
 		if($_ =~ /Run acc="(.*?)" total_spots="(\d*?)" total_bases="(\d*?)"/)
 		{
@@ -146,44 +152,38 @@ sub getRuns
 			
 			if(($onlyPaired == 1 && $paired == 1) || $onlyPaired == 0)
 			{
-				print "$Run_acc\t$total_spots\t$total_bases\n";
+				# print "$Run_acc\t$total_spots\t$total_bases\n";
 	
 				my @runParameters = ();
 				push (@runParameters, $Run_acc, $total_spots, $total_bases, $paired);
 				push (@array, [@runParameters]);
 			}
-
-			if(1 == $paired)
-			{
-				$paired = 0;
-			}
 		}
 
-		# check if it's a run with paired reads
-#		if($_ =~ /(PAIRED NOMINAL_LENGTH)/)
-        if($_ =~ /PAIRED/)
-		{
-			$paired = 1;
-		}
 	}
 	close (FILE);
+	
+	my $size = scalar @array;
+	print "------------------------------------------------------------------------\n";
+	print "Found $size runs in $outFileDir$listFile\n";
+	print "------------------------------------------------------------------------\n\n";
 	@array;
 }
 
 sub saveListToFile
 {
     # Get passed arguments
-    my ($start, $arr) = @_;
+    my ($arr) = @_;
 
     # Get the array from the reference
     my @array = @{$arr};
-    my $end = scalar @array + $start - 1;
 
-#	open(OUTPUTFILE, ">", "$outFileDir Runlist$start-$end.txt");
+	# open(OUTPUTFILE, ">", "$outFileDir Runlist$start-$end.txt");
 	my $fileName = "Runlist.txt";
 	open(OUTPUTFILE, ">", "$outFileDir$fileName");
 	print OUTPUTFILE  "\@Run_acc\ttotal_spots\ttotal_bases\tbool:paired\t#tabulator separated\n";
-	for(my $i = 0;  $i < scalar @array ; $i++)
+	my $size = scalar @array;
+	for(my $i = 0;  $i <  $size; $i++)
 	{
 		for(my $j = 0;  $j < scalar @{$array[$i]} ; $j++)
 		{
@@ -193,7 +193,8 @@ sub saveListToFile
 	}
 	close(OUTPUTFILE);
 
-    print "Created Runlist.txt with $end runs.\n";
+	
+    print "Created Runlist.txt with $size runs.\n";
 }
 
 sub createRunScoreFile
@@ -214,6 +215,19 @@ sub createRunScoreFile
 	}
 	close(OUTPUTFILE);
 }
+
+sub cleanUp{
+    system("rm $IDFile 2> /dev/null");
+    system("rm $listFile 2> /dev/null");
+}
+
+#createRunScoreFile(\@array);
+
+# -----------------------------------------------------
+# MAIN
+# -----------------------------------------------------
+$IDFile = "IDFile.xml";
+$WEBENV = retrieveID($IDFile);
 
 my @array = ();
 
@@ -238,17 +252,7 @@ else
 	push(@array, getRuns($WEBENV, $retmax, $retstart));	
 }
 
-saveListToFile($retstart, \@array);
-
-
-sub cleanUp{
-    system("rm $IDFile 2> /dev/null");
-    system("rm $listFile 2> /dev/null");
-}
-
+saveListToFile(\@array);
 
 cleanUp();
 exit(0)
-
-#createRunScoreFile(\@array);
-
