@@ -368,7 +368,7 @@ foreach my $latinName (keys %species){
 
         chdir("$outFileDir/$folder") or die "cannot change: $!\n";
         system($VARUSCall);
-
+		chdir("$outFileDir") or die "cannot change: $!\n";
         Log(0, "...done with $latinName\n$sep");
     }
 

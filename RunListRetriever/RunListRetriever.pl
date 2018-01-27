@@ -217,7 +217,9 @@ sub createRunScoreFile
 }
 
 sub cleanUp{
-    system("rm $IDFile 2> /dev/null");
+    system("rm $outFileDir$IDFile 2> /dev/null");
+    my $rmF = $outFileDir."list*";
+    system("rm $rmF");
     #system("rm $listFile 2> /dev/null");
 }
 
