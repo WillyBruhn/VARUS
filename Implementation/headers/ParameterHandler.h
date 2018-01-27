@@ -40,6 +40,8 @@ public:
 	std::string value;
 	std::string description;
 	std::string category;
+
+	bool deprecated;
 };
 
 class ParameterHandler
@@ -167,7 +169,7 @@ public:
 	void exit_text();
 
 	template<typename K>
-	void add_parameter(std::string name, K a, std::string category = "", std::string description = "");
+	void add_parameter(std::string name, K a, std::string category = "", std::string description = "", bool deprecated = false);
 
 	ParameterHandler();
 	~ParameterHandler();

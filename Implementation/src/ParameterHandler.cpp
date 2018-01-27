@@ -39,9 +39,9 @@ int getoptCount = 0;
 #endif
 
 #ifndef INITPARAM
-#define INITPARAM(x,z,use) {          \
+#define INITPARAM(x,z,use,dep) {          \
 		string name = #x;	\
-    add_parameter(name, x, z, use); \
+    add_parameter(name, x, z, use,dep); \
 }
 #endif
 
@@ -291,21 +291,30 @@ void ParameterHandler::printParameterCategory(const paramCat cat, const std::str
 	 * Prints the usage for the given parameter.
 	 */
 
-	cout << parameterCategories[cat] << ":\n";;
-	cout << printTextWithWidthAndLeftOffset(des,80,maxParLength) << "\n";
 
 
-    for(unsigned int i = 0; i < lineWidth; i++){
-        cout << "-";
-    }
-    cout << "\n";
-
+	bool first = true;
 	map<string,Parameter>::iterator i;
 
 	const char separator    = ' ';
 
 	for(i = parameters.begin(); i != parameters.end(); i++) {
-		if(i->second.category == parameterCategories[cat]){
+		if(i->second.deprecated == false && i->second.category == parameterCategories[cat]){
+
+			// only print the category-description if there are any parameters in it
+			if(first){
+				cout << parameterCategories[cat] << ":\n";;
+				cout << printTextWithWidthAndLeftOffset(des,80,maxParLength) << "\n";
+
+
+				for(unsigned int i = 0; i < lineWidth; i++){
+					cout << "-";
+				}
+				cout << "\n";
+
+				first = false;
+			}
+
 			string out = "--" + i->first + ": " + i->second.value;
 
 			cout << lineLength(out,lineWidth,maxParLength) << "\n";
@@ -384,41 +393,41 @@ ParameterHandler::ParameterHandler() {
 			" alignments are deleted. At the end one final merge is done. "
 			"2 is the minimal value. "
 			"Note: If you set the parameter deleteLater = 0, then only"
-			" one merge at the end of execution is done.");
+			" one merge at the end of execution is done.",false);
 
-	qualityThreshold = 70.0;
+	qualityThreshold = 5.0;
 	INITPARAM(qualityThreshold,
 			parameterCategories[BASICSETTINGS],
 			"Specifies how much of uniquely mapping reads you are allowing."
 			" STAR produces a file 'Log.final.out' with information of "
 			"how much percent of the reads did map. Really small values "
-			"like 0.1 can be an indicator of intrinsic dna.");
+			"like 0.1 can be an indicator of intrinsic dna.",false);
 
 	fastqDumpCall = "fastq-dump";
 	INITPARAM(fastqDumpCall,
 			parameterCategories[MANDATORY],
 			"if fastq-dump is not in your $PATH, you can specify "
 			"the path as well like /path/to/fastqdump/./fastq-dump."
-			"Note that this string has to contain './fastq-dump' as well.");
+			"Note that this string has to contain './fastq-dump' as well.",false);
 
 	//"/home/willy/Bachelorarbeit/STAR-2.5.1b/source/"
     pathToSTAR 			= "/home/willy/Bachelorarbeit/STAR-2.5.1b/source/";
     	INITPARAM(pathToSTAR,
     			parameterCategories[MANDATORY],
     			"specifies the path to the executable of STAR, the software that"
-    			" aligns the reads to the transcriptome/genome.");
+    			" aligns the reads to the transcriptome/genome.",false);
 
 	pathToVARUS = "/home/willy/BRAKER/VARUS/Implementation/";;
 		INITPARAM(pathToVARUS,
 				parameterCategories[MANDATORY],
-				"specifies the path to the executable of VARUS");
+				"specifies the path to the executable of VARUS",false);
 
 //	"/home/willy/workspace/UnitTests/ParameterHandler/script/"
 	pathToRuns 			= "../Tutorial/Drosophila/";
     	INITPARAM(pathToRuns,
     			parameterCategories[MANDATORY],
 				"specifies the path to Runlist.txt."
-				"You can retrieve a Runlist with the perl-script 'RunListRetriever.pl'.");
+				"You can retrieve a Runlist with the perl-script 'RunListRetriever.pl'.",false);
 
 //	readFilesIn 		= "default";
 //    	INITPARAM(readFilesIn, "specifies the path to the folder in which the ");
@@ -428,17 +437,17 @@ ParameterHandler::ParameterHandler() {
     	INITPARAM(genomeDir,
     			parameterCategories[MANDATORY],
 				"specifies the path to the genome/transcriptome"
-    			" that you are investigating.");
+    			" that you are investigating.",false);
 
     outFileNamePrefix 	= "../Tutorial/Drosophila/";
     	INITPARAM(outFileNamePrefix,
     			parameterCategories[MANDATORY],
-				"specifies the path in which all output of VARUS should be stored.");
+				"specifies the path in which all output of VARUS should be stored.",false);
 
     runThreadN = 4;
     	INITPARAM(runThreadN,
     			parameterCategories[BASICSETTINGS],
-				"Number of threads to run STAR parallel with. Read STAR-manual for more information.\n");
+				"Number of threads to run STAR parallel with. Read STAR-manual for more information.\n",false);
 
     blockSize = 5000;		// <---- 5000 default
     	INITPARAM(blockSize,
@@ -446,19 +455,19 @@ ParameterHandler::ParameterHandler() {
 				"the number of bases one block will have. "
     			"This is done in order to be able"
     			" to compare the coverage of larger chromosomes with smaller ones, since "
-    			"larger chromosomes will naturally have more reads mapped to them than smaller ones.");
+    			"larger chromosomes will naturally have more reads mapped to them than smaller ones.",false);
 
     batchSize = 100000;
     	INITPARAM(batchSize,
     			parameterCategories[BASICSETTINGS],
 				"the number of reads to be downloaded in each step. "
-    			"Typically a library contains about 10e+6 to 10e+7 reads.");
+    			"Typically a library contains about 10e+6 to 10e+7 reads.",false);
 
 	pseudoCount = 1;
     	INITPARAM(pseudoCount,
     			parameterCategories[SIMPLEANDADVANCED],
 				"adds a pseudocount to all possible observations. Only relevant for "
-    			"estimators 1, 2.");
+    			"estimators 1, 2.",false);
 
 //    coverage = 10;
 //    	PARAM(coverage);
@@ -468,7 +477,7 @@ ParameterHandler::ParameterHandler() {
     	INITPARAM(lambda,
     			parameterCategories[SIMPLEANDADVANCED],
 				"parameter for estimator 2. The weight with which the sum of all observations"
-				" in all runs is added as additional pseudocounts for the estimation.");
+				" in all runs is added as additional pseudocounts for the estimation.",false);
 
 //    logScore = 1;	// 1 == logScore, 0 == minScore
 //    	PARAM(logScore);
@@ -476,19 +485,19 @@ ParameterHandler::ParameterHandler() {
     	INITPARAM(createDice,
     			parameterCategories[SIMULATION],
 				"if set to 1 dice will be created from real runs."
-    			"Only needed for testing/simulation-purposes.");
+    			"Only needed for testing/simulation-purposes.",true);
 
 	simulation = 0;		// 1 => running simulation, 0 => real downloadprogramm
     	INITPARAM(simulation,
     			parameterCategories[SIMULATION],
-				"if set to 1, the program will simulate downloads.");
+				"if set to 1, the program will simulate downloads.",true);
 
 	estimator = 2;	// 1 == simple, 2 == advanced, 3 == DM, else naive
     	INITPARAM(estimator,
     			parameterCategories[BASICSETTINGS],
 				"1 == simple, 2 == advanced, 3 == dirichlet mixture, 4 == cluster estimator, else downloads will "
     			"be done choosing the runs randomly. Note that if you choose to download randomly, you "
-    			"should specify maxBatches in order to let the program end at some point.");
+    			"should specify maxBatches in order to let the program end at some point.",false);
 
 //	dieList = 1;	// 1== uses "Dielist.txt", 0 == uses "Runlist.txt
 //    	INITPARAM(dieList, "1== uses \"Dielist.txt\", 0 == uses \"Runlist.txt\"");
@@ -496,24 +505,24 @@ ParameterHandler::ParameterHandler() {
     lessInfo = 0; 	// 1 == Toy prints less info
     	INITPARAM(lessInfo,
     			parameterCategories[SIMULATION],
-				"if set to 1, Toy prints less info. Only Relevant for simulation.");
+				"if set to 1, Simulator prints less info. Only Relevant for simulation.",true);
 
     pathToDice 	= "/home/willy/Bachelorarbeit/Manager/test138/";
     	INITPARAM(pathToDice,
     			parameterCategories[SIMULATION],
-				"specifies the path to the dice. Dice are saved in csv-format.");
+				"specifies the path to the dice. Dice are saved in csv-format.",true);
 
     cost = 0;
     	INITPARAM(cost,
     			parameterCategories[ESTIMATOR],
 				"sets the cost for downloading one read."
-    			" The cost-function is a monotonically increasing function with monotonically decreasing derivative.");
+    			" The cost-function is a monotonically increasing function with monotonically decreasing derivative.",false);
 
     components = 1;
     	INITPARAM(components,
     			parameterCategories[DIRICHLETMIXTURE],
 				"sets the number of components of the dirichlet mixture or the cluster estimator. "
-    			"Only relevant for estimators 3 and 4.");
+    			"Only relevant for estimators 3 and 4.",true);
 
     numOfBlocks = 29919;
     	INITPARAM(numOfBlocks,
@@ -523,38 +532,38 @@ ParameterHandler::ParameterHandler() {
 				"The sum of these numbers is numOfBlocks."
     			"This is done because naturally it is expected that larger transcripts have a higher chance"
     			" that reads are mapping to them. Also the coverage among the larger transcripts is desired "
-    			"to be more or less uniformly distributed.");
+    			"to be more or less uniformly distributed.",true);
 
     trainingsIterations = 1;
     	INITPARAM(trainingsIterations,
     			parameterCategories[DIRICHLETMIXTURE],
 				"the number of iterations the dirichlet mixture or cluster estimator will be "
-    			"trained in each step. Only relevant for estimators 3 and 4.");
+    			"trained in each step. Only relevant for estimators 3 and 4.",true);
 
     loadAllOnce = 0;
     	INITPARAM(loadAllOnce,
     			parameterCategories[ESTIMATOR],
 				"if set to 1, a single batch from each run will be downloaded once, before"
-    			" the estimation process starts. Useful for the expensive estimators 3 and 4."
+    			" the estimation process starts.",false
     			);
 
 	verbosityDebug = 0;
 		INITPARAM(verbosityDebug,
 				parameterCategories[BASICSETTINGS],
-				"sets the debug-verbosity-level. There are 4 verbosity-levels. Higher values mean more output.");
+				"sets the debug-verbosity-level. There are 4 verbosity-levels. Higher values mean more output.",false);
 //		verbosity_out_level = verbosityDebug;
 
 	newtonIterations = 10;
 		INITPARAM(newtonIterations,
 				parameterCategories[DIRICHLETMIXTURE],
 				"number of times the newtons method is done to find the maximum-likelihood"
-				" for the alpha-sum. Only relevant for estimator 3.");
+				" for the alpha-sum. Only relevant for estimator 3.",true);
 
 	newtonPrecision = 0.001;
 		INITPARAM(newtonPrecision,
 				parameterCategories[DIRICHLETMIXTURE],
 				"threshold at which the newtons-method will aboard, and return the value."
-				" Only relevant for estimator 3.");
+				" Only relevant for estimator 3.",true);
 
 	readParametersFromFile = 1;
 		INITPARAM(readParametersFromFile,
@@ -562,7 +571,7 @@ ParameterHandler::ParameterHandler() {
 				"if set to 1, the program will look for a file specified with "
 				"pathToParameters and interpret its content as command-line arguments. "
 				"These parameters will then be used to run the program. Note: additional parameters"
-				" passed with the command line will overwrite the parameters read from the parameters-file.");
+				" passed with the command line will overwrite the parameters read from the parameters-file.",false);
 			readAllready = false;
 
 	currentWorkingDirectory = get_working_path();
@@ -571,13 +580,13 @@ ParameterHandler::ParameterHandler() {
 		INITPARAM(pathToParameters,
 				parameterCategories[COMMANDLINE],
 				"specifies the path and name to the parameters-file that should be read in and written to. "
-				"Default is the current working directory and a file called 'VARUSparameters.txt'.");
+				"Default is the current working directory and a file called 'VARUSparameters.txt'.",false);
 
 	exportParametersToFile = 0;
 		INITPARAM(exportParametersToFile,
 				parameterCategories[COMMANDLINE],
 				"if set to 1 the parameters used for this execution of the program"
-				" will be exported into a parametersfile");
+				" will be exported into a parametersfile",false);
 
 	exportObservationsToFile = 0;
 		INITPARAM(exportObservationsToFile,
@@ -586,25 +595,25 @@ ParameterHandler::ParameterHandler() {
 				" runs in all steps into CSV-files. This does not refer to the fasta.files"
 				" but to the quantitative distributions of the reads among the genome.\n"
 				"WARNING: This will overwrite older files! \n"
-				"NOTE: Using this option can lead to performance-issues.");
+				"NOTE: Using this option can lead to performance-issues.",false);
 
 	deleteLater = 0;
 		INITPARAM(deleteLater,
 				parameterCategories[BASICSETTINGS],
 				"if set to 1, the fasta-files and alignment-files will be deleted after"
 				" they are used to identify the next run to be downloaded from. If you want to use the "
-				"reads for your genome-annotation you should not use this option.");
+				"reads for your genome-annotation you should not use this option.",false);
 
 	maxBatches = 100;
 		INITPARAM(maxBatches,
 				parameterCategories[BASICSETTINGS],
-				"if  maxBatches > 0, the program will exit as soon as it loaded maxBatches batches.");
+				"if  maxBatches > 0, the program will exit as soon as it loaded maxBatches batches.",false);
 
 	randomSeed = -1;
 		INITPARAM(randomSeed,
 				parameterCategories[BASICSETTINGS],
 				"if randomSeed > 0, the program will have deterministic results. Else the "
-				"seed will be set according to the current time");
+				"seed will be set according to the current time",false);
 
 	profitCondition = 0;
 		INITPARAM(profitCondition,
@@ -612,20 +621,20 @@ ParameterHandler::ParameterHandler() {
 				"if profitConditon == 1, the program will exit if the"
 				" expected profit falls below 0. Note that the expected profit can lead to the program downloading"
 				" for a very long time, since some of the estimators tend to be very optimistic "
-				"if the parameters are not set adequately.");
+				"if the parameters are not set adequately.",false);
 
 	ignoreReadNum = 0;
 		INITPARAM(ignoreReadNum,
 				parameterCategories[SIMULATION],
 				"Only important for simulation: if ignoreReadNum == 1, it will be ignored in case of a simulation "
 				"if a run has no reads left. Otherwise the run is not an option to download from after the maximum number of reads"
-				" is downloaded from this run.")
+				" is downloaded from this run.",true)
 
 	simpleDM = 0;
 		INITPARAM(simpleDM,
 				parameterCategories[DIRICHLETMIXTURE],
 				"refers to estimator 3. With this estimation procedure the calculation times are a bit better "
-				"than with the normal dirichlet mixture. However the estimation is not that accurate.");
+				"than with the normal dirichlet mixture. However the estimation is not that accurate.",true);
 
 //	kMeansIterations = 10;
 //		INITPARAM(kMeansIterations, "only relevant for estimator 4: Number of iterations for "
@@ -635,7 +644,7 @@ ParameterHandler::ParameterHandler() {
 		INITPARAM(exportNewtons,
 				parameterCategories[DIRICHLETMIXTURE],
 				"exports the steps of the newtons method. Deprecated since it is very expensive."
-				" Only relevant for estimator 3.");
+				" Only relevant for estimator 3.",true);
 
 
 //	param.reset(this);
@@ -982,7 +991,10 @@ std::ostream & ParameterHandler::printParameters(std::ostream& os) {
 	for(it = parameters.begin(); it != parameters.end(); it++) {
 //		os << "--" << it->first << " " << it->second << "\n";
 //		os << "--" << it->first << " " << it->second.description << "\n";
-		os << "--" << it->first << " " << it->second.value << "\n";
+
+		if(it->second.deprecated == false){
+			os << "--" << it->first << " " << it->second.value << "\n";
+		}
 	}
 	return os;
 }
@@ -1015,7 +1027,7 @@ void ParameterHandler::export_parameters() {
 }
 
 template<typename K>
-void ParameterHandler::add_parameter(string name, K a, string category, string use) {
+void ParameterHandler::add_parameter(string name, K a, string category, string use, bool deprecated) {
 	/*! \brief This function is called when a new parameter should be added.
 	 *
 	 * With this function and the map parameters it is possible to
@@ -1040,6 +1052,7 @@ void ParameterHandler::add_parameter(string name, K a, string category, string u
     if(use != "")
     	parameters[name].description = use;
 
+    parameters[name].deprecated = deprecated;
 }
 
 void ParameterHandler::read_parameters_from_file(string path) {

@@ -218,7 +218,7 @@ sub createRunScoreFile
 
 sub cleanUp{
     system("rm $IDFile 2> /dev/null");
-    system("rm $listFile 2> /dev/null");
+    #system("rm $listFile 2> /dev/null");
 }
 
 #createRunScoreFile(\@array);
