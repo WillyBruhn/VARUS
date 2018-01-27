@@ -351,6 +351,9 @@ foreach my $latinName (keys %species){
             print $fh "$newLine";
         }
         close $fh;
+        
+        my $rmCopy = "rm $outFileDir/$folder/VARUSparametersCopy.txt";
+        system($rmCopy);
 
         Log(0, "... done adjusting parameters.\n$sep");
         
