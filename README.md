@@ -1,3 +1,7 @@
+This is an old repository. Please refer to https://github.com/MarioStanke/VARUS for an updated version.
+
+-------------------------------------------------------------------------------------------------------------------------------
+
 # VARUS: Drawing diverse samples from RNA-Seq libraries
 **VARUS** automates the selection and download of RNA-Seq runs available at the SRA, with regard to a **sufficiently** high coverage. This is done in a stepwise procedure. An iteration includes:
 
