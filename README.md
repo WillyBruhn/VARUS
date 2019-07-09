@@ -1,4 +1,4 @@
-This is an old repository. Please refer to https://github.com/MarioStanke/VARUS for an updated version.
+This is an old repository. Please refer to https://github.com/Gaius-Augustus/VARUS for an updated version.
 
 -------------------------------------------------------------------------------------------------------------------------------
 
